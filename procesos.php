@@ -85,7 +85,8 @@ if(isset($_POST["ENCARGOS"])){
                 $estado = @$_POST["pedido"];
                 $proveedor = @$_POST["proveedor"];
                 $observaciones = @$_POST["observa"];
-                $fecha = date("Y-m-d");
+                $fecha = date("Y-m-d H:i");
+                echo $fecha;
                       if($telf == "" && $codigoNaci == ""){
                         mysqli_query($enlace,"INSERT INTO clientes (idcliente,nombre,apellidos,telefono) VALUES (null,'$nombre','$apellidos','N/A')");
                           $idcli = mysqli_insert_id($enlace);
@@ -104,7 +105,9 @@ if(isset($_POST["ENCARGOS"])){
                   }
 
 
-            echo "<script>alert('ENCARGO REGISTRADO');
+            echo "<script>
+            var datos = <?php echo $fecha ?>;
+            alert('datos');
               window.location='index.php';</script>";
         }
       else if(isset($_POST["BUSCAR"])){
