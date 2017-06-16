@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-06-2017 a las 13:22:45
+-- Tiempo de generación: 16-06-2017 a las 12:39:15
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -49,6 +49,22 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTRO_ENCARGO` (IN `empleado` VA
 	insert into encargos values(null,empleado,nombre,apellidos,telef,producto,cn,unidades,proveedor,null,null,fechaHora,observaciones);
 END$$
 
+--
+-- Funciones
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `REGISTRO_SERVICIO` (`nom` VARCHAR(200), `apel` VARCHAR(200), `tel` VARCHAR(10), `serv` TINYINT, `fecha` DATETIME, `observa` VARCHAR(200)) RETURNS TINYINT(1) BEGIN
+	declare devuelve boolean;
+    declare consulta int;
+    
+		set devuelve = true;
+        set consulta = (select count(id) from encargos where servicio > -1 and fechaHora = fecha );
+        
+			if consulta = 0 then insert into encargos values(null,null,nom,apel,tel,null,null,null,null,serv,default,fecha,observa);
+            elseif consulta > 0  then set devuelve = false;
+            end if;
+RETURN devuelve;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -80,7 +96,19 @@ CREATE TABLE `encargos` (
 INSERT INTO `encargos` (`id`, `empleado`, `nombre`, `apellidos`, `telef`, `producto`, `cn`, `unidades`, `proveedor`, `servicio`, `confirmado`, `fechaHora`, `observaciones`) VALUES
 (1, 'pepe', 'luis', 'garcia', '650258745', 'frenadol', '650258', 1, 'HEFAME', 2, 'NO', '2017-06-15 11:51:00', 'guchi piruli'),
 (2, 'angel', 'pepe', 'mola', '699889999', 'aspirinas', '689568', 2, 'ALLIANCE', NULL, NULL, '2017-06-15 12:18:00', 'guachi megaluli'),
-(3, 'angel', 'pepe', 'mola', '699889999', 'aspirinas', '689568', 2, 'ALLIANCE', NULL, NULL, '2017-06-15 12:18:00', 'guachi megaluli');
+(3, 'angel', 'pepe', 'mola', '699889999', 'aspirinas', '689568', 2, 'ALLIANCE', NULL, NULL, '2017-06-15 12:18:00', 'guachi megaluli'),
+(4, NULL, 'prueba', 'prueba', '6548589', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-15 11:50:00', 'PROBANDO'),
+(5, NULL, 'prueba', 'prueba', '6548589', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-15 11:55:00', 'PROBANDO'),
+(6, NULL, 'prueba', 'prueba', '6548589', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-15 11:58:00', 'PROBANDO'),
+(7, 'ANGEL', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 1, 'PRUEBA', NULL, NULL, '0000-00-00 00:00:00', '0'),
+(8, 'ANGEL', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 1, 'PRUEBA', NULL, NULL, '0000-00-00 00:00:00', '0'),
+(9, 'ANGEL', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 1, 'PRUEBA', NULL, NULL, '0000-00-00 00:00:00', '0'),
+(10, 'ANGEL', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 1, 'PRUEBA', NULL, NULL, '0000-00-00 00:00:00', '0'),
+(11, 'ANGEL', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 1, 'PRUEBA', NULL, NULL, '2017-06-15 12:30:00', 'PROBANDO'),
+(12, 'ANGEL', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 1, 'PRUEBA', NULL, NULL, '2017-06-15 12:30:00', 'PROBANDO'),
+(13, 'ANGEL', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 'PRUEBA', 1, 'PRUEBA', NULL, NULL, '2017-06-15 12:30:00', 'PROBANDO'),
+(14, 'ANGEL', 'dadas', 'asdasd', 'dasdas', 'dsada', 'das', 1, 'HEFAME', NULL, NULL, '2017-06-16 12:28:00', 'dasdasd'),
+(15, 'ANGEL', 'PACO', 'GARCIA GARCIA', '652589', 'ASPIRINAS C', '569658', 2, 'ALLIANCE', NULL, NULL, '2017-06-16 12:34:00', 'ESTO ES UNA PRUEBA');
 
 --
 -- Índices para tablas volcadas
@@ -100,7 +128,7 @@ ALTER TABLE `encargos`
 -- AUTO_INCREMENT de la tabla `encargos`
 --
 ALTER TABLE `encargos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
