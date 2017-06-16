@@ -52,14 +52,14 @@ if(isset($_POST["ENCARGOS"])){
                 C.N.
                 <input id='texto' type='text' name='codigoNaci'>
                 UNIDADES:
-                <input id='texto' type='text' name='unidades'><br><br>
+                <input id='texto' type='number' required name='unidades'><br><br>
                 PROVEEDOR:
                 <select name='proveedor'>
-                <option value='1'>HEFAME</option>
-                <option value='2'>ALLIANCE</option>
-                <option value='3'>COFAMASA</option>
-                <option value='4'>ACTIBIOS</option>
-                <option value='5'>ORTOPEDIA</option>
+                <option value='HEFAME'>HEFAME</option>
+                <option value='ALLIANCE'>ALLIANCE</option>
+                <option value='COFAMASA'>COFAMASA</option>
+                <option value='ACTIBIOS'>ACTIBIOS</option>
+                <option value='ORTOPEDIA'>ORTOPEDIA</option>
                 </select>
                 PEDIDO ?:
                 <select name='pedido'>
@@ -86,29 +86,12 @@ if(isset($_POST["ENCARGOS"])){
                 $proveedor = @$_POST["proveedor"];
                 $observaciones = @$_POST["observa"];
                 $fecha = date("Y-m-d H:i");
-                echo $fecha;
-                      if($telf == "" && $codigoNaci == ""){
-                        mysqli_query($enlace,"INSERT INTO clientes (idcliente,nombre,apellidos,telefono) VALUES (null,'$nombre','$apellidos','N/A')");
-                          $idcli = mysqli_insert_id($enlace);
-                        mysqli_query($enlace,"INSERT INTO productos (idproducto,descripcion,codigonacional) VALUES (null,'$producto','N/A')");
-                          $idpro = mysqli_insert_id($enlace);
-                            mysqli_query($enlace,"INSERT INTO suministros (proveedor,producto) VALUES ($proveedor,$idpro)");
-                          mysqli_query($enlace,"INSERT INTO encargos (id,empleado,cliente,producto,fecha,estado,unidades,observaciones) VALUES (null,$empleado,$idcli,$idpro,'$fecha','$estado',1,'$observaciones')");
 
-                      }else {
-                  mysqli_query($enlace,"INSERT INTO clientes (idcliente,nombre,apellidos,telefono) VALUES (null,'$nombre','$apellidos','$telf')");
-                    $idcli = mysqli_insert_id($enlace);
-                  mysqli_query($enlace,"INSERT INTO productos (idproducto,descripcion,codigonacional) VALUES (null,'$producto','$codigoNaci')");
-                    $idpro = mysqli_insert_id($enlace);
-                      mysqli_query($enlace,"INSERT INTO suministros (proveedor,producto) VALUES ($proveedor,$idpro)");
-                    mysqli_query($enlace,"INSERT INTO encargos (id,empleado,cliente,producto,fecha,estado,unidades,observaciones) VALUES (null,$empleado,$idcli,$idpro,'$fecha','$estado',$unidades,'$observaciones')");
-                  }
+                 mysqli_query($enlace,"CALL REGISTRO_ENCARGO('$empleado','$nombre','$apellidos','$telf','$producto','$codigoNaci',$unidades,'$proveedor','$fecha','$observaciones')");
+            echo "<script> alert('ENCARGO REGISTRADO') ; window.location='index.php';</script>";
 
 
-            echo "<script>
-            var datos = <?php echo $fecha ?>;
-            alert('datos');
-              window.location='index.php';</script>";
+
         }
       else if(isset($_POST["BUSCAR"])){
         echo "<div id='contenedor'>
