@@ -2,9 +2,12 @@
 <html>
 <head>
       <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" type="text/css" href="css/estilos.css"/>
       <link rel="stylesheet" type="text/css" href="css/tcal.css" />
-      <script type="text/javascript" src="js/JQUERY.js"></script>
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <script src="js/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
       <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
       <script type="text/javascript" src="js/tcal.js"></script>
 
@@ -69,9 +72,10 @@ if(isset($_POST["ENCARGOS"])){
                 OBSERVACIONES:<br>
                 <textarea name='observa' cols='50' rows='12'></textarea><br><br>
 
-
-                <input id='boton' type='submit' name='registrar' value='REGISTRAR'>
-
+                <button type='submit' class='btn btn-primary btn-lg' name='registrar'>REGISTRAR</button>
+                </form>
+                <form name='ATRAS' method='POST' action='index.php' enctype='multipart/form-data'>
+                <button type='submit' class='btn btn-primary btn-lg' name='vovler'>ATRÁS</button>
                 </form></div>";
         }
         else if(@$_GET["accion"] == 1){    //AGREGA CONTACTOS
