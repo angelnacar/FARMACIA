@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
       <link rel="stylesheet" type="text/css" href="css/estilos.css"/>
       <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css" />
       <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/alertify.css">
+      <link rel="stylesheet" href="css/default.css">
       <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen"
      href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
       <script src="js/jquery.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
+      <script src="js/alertify.js"></script>
       <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
       <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
 
@@ -33,6 +38,7 @@ $(document).ready(function() {
     });
   });
 </script>
+
 
 
 </head>
@@ -222,7 +228,7 @@ if(isset($_POST["ENCARGOS"])){
                 </div>
                 <div class='col-xs-1'>
                   <div id='datetimepicker2' class='input-append date'>
-                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='fechafin' placeholder='FECHA/HORA INICIAL'></input>
+                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='fechafin' placeholder='FECHA/HORA FINAL'></input>
                     <span class='add-on'>
                     <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
                     </span>
@@ -241,40 +247,52 @@ if(isset($_POST["ENCARGOS"])){
               $codigoN = @$_POST["codigoNaci"];
               $fechaini = @$_POST["fechaini"];
               $fechafin = @$_POST["fechafin"];
-                echo $fechaini;
-                echo $fechafin;
-                echo $nombre;
-                echo $apel;
 
+                echo $nombre;
 
 
               $buscar = mysqli_query($enlace, "CALL CONSULTA_PRODUCTOS('$nombre','$apel','$producto','$codigoN','$fechaini','$fechafin')");
 
-              echo "
+              echo "<div class='container'>
+                      <div id='tabla'>
+                        <div class='row'>
+                          <div class'col-sm-12'>
+                              <h2>RESULTADOS</h2>
+                            <table class='table table-hover table-condensed table-bordered'>
+                          <tr>
+                            <th>EMPLEADO</th>
+                            <td>NOMBRE</td>
+                            <td>APELLIDOS</td>
+                            <td>TELEFONO</td>
+                            <td>PRODUCTO</td>
+                            <td>C.N.</td>
+                            <td>UDS</td>
+                            <td>PROVEEDOR</td>
+                            <td>FECHA/HORA</td>
+                            <td>OBSERVACIONES</td>
+                            <td>MODIFICAR</td>
 
-                <table class='table table-bordered'><tr><th>EMPLEADO</th><th>NOMBRE</th><th>APELLIDOS</th><th>TELF</th><th>PRODUCTO</th><th>UNIDADES</th><th>C.N.</th><th>FECHA</th></th><th>PROVEEDOR</th><th>OBSERVACIONES</th><th>MODIFICAR</th></tr>";
+                          </tr>";
                 while($fila = mysqli_fetch_array($buscar)){
-                    $id = $fila["id"];
-                  echo "<tr>
-                        <td>$fila[empleado]</td>
-                        <td>$fila[nombre]</td>
-                        <td>$fila[apellidos]</td>
-                        <td>$fila[telef]</td>
-                        <td>$fila[producto]</td>
-                        <td>$fila[unidades]</td>
-                        <td>$fila[cn]</td>
-                        <td>$fila[fechaHora]</td>
-                        <td>$fila[proveedor]</td>
-                        <td>$fila[observaciones]</td>
-                        <td><form method='POST' action='procesos.php?accion=20'>
-                  				<input name='id' type='hidden' value='$id'>
-                          <input name='comprar' type='submit' value='MODIFICAR'>
-                  			</form></td>
-                        <td></td></tr>";
-                  }
-                echo "</table>
-                <form id='boton' name='F10' method='POST' action='index.php'>
-                <input type='submit' name='inicio' value='INICIO'></form></body></html>";
+                  $id = $fila["id"];
+                echo "<tr>
+                      <td>$fila[empleado]</td>
+                      <td>$fila[nombre]</td>
+                      <td>$fila[apellidos]</td>
+                      <td>$fila[telef]</td>
+                      <td>$fila[producto]</td>
+                      <td>$fila[unidades]</td>
+                      <td>$fila[cn]</td>
+                      <td>$fila[fechaHora]</td>
+                      <td>$fila[proveedor]</td>
+                      <td>$fila[observaciones]</td>
+                      <td><form method='POST' action='procesos.php?accion=20'> <button type='submit' class='btn btn-warning glyphicon glyphicon-pencil' value='$id'></button></form> </td>
+                    </tr>";
+                    }
+                      echo  "</table></div>
+                       </div>
+                      </div>
+                    </div>";
 
 
       }
