@@ -4,17 +4,34 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" type="text/css" href="css/estilos.css"/>
-      <link rel="stylesheet" type="text/css" href="css/tcal.css" />
+      <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css" />
       <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen"
+     href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
       <script src="js/jquery.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
       <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
-      <script type="text/javascript" src="js/tcal.js"></script>
+      <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
     $("#tablas").tablesorter();
 });
+</script>
+<script type="text/javascript">
+  $(function() {
+    $('#datetimepicker1').datetimepicker({
+      language: 'pt-BR'
+    });
+  });
+</script>
+<script type="text/javascript">
+  $(function() {
+    $('#datetimepicker2').datetimepicker({
+      language: 'pt-BR'
+    });
+  });
 </script>
 
 
@@ -106,13 +123,20 @@ if(isset($_POST["ENCARGOS"])){
         echo "<div id='contenedor'>
                 <div id='contenedor2'>
                     <h1>BUSCAR</h1>
-                    <form name='F1' method='POST' action='procesos.php?accion=4'>
-                    <input  type='submit' value='ENCARGOS'></form><br><br>
-                    <form name='F2' method='POST' action='procesos.php?accion=5'>
-                    <input  type='submit' value='SERVICIOS'></form><br><br>
+                  <div class='row'>
+                    <div class='col-xs-5'>
+                    <form name='F1' method='POST' action='procesos.php?accion=5'>
+                    <button type='submit' class='btn btn-primary btn-lg' name='vovler'>SERVICIOS</button></form>
+                    </div>
+                    <div class='col-xs-2'>
+                    <form name='F2' method='POST' action='procesos.php?accion=4'>
+                      <button type='submit' class='btn btn-primary btn-lg' name='vovler'>ENCARGOS</button></form>
+                    </div>
+                    <div class='col-xs-5'>
                     <form name='F2' method='POST' action='index.php'>
-                    <input  type='submit' value='MENU'></form>
-                </div>
+                      <button type='submit' class='btn btn-primary btn-lg' name='vovler'>INICIO</button></form>
+                    </div>
+                </div></div>
             </div>";
       }
       else if(@$_GET["accion"] == 2){    //AGREGA CONTACTOS
@@ -170,27 +194,45 @@ if(isset($_POST["ENCARGOS"])){
     }
       else if(@$_GET["accion"] == 4){
 
-        echo "<div id='contenedor3'>
+      echo "<div id='contenedor3'>
+                  <h1><strong>BUSCAR ENCARGO</strong></h1>
+            <form name='REGISTRO' method='POST' action='procesos.php?accion=6'>
+              <div class='row'>
+                <div class='col-xs-3'>
+                  <input type='text' class='form-control' placeholder='NOMBRE CLIENTE' name='nombre'>
+                </div>
+                <div class='col-xs-3'>
+                  <input type='text' class='form-control' placeholder='APELLIDOS CLIENTE' name='apellidos'>
+                </div>
+                <div class='col-xs-3'>
+                  <input type='text' class='form-control' placeholder='PRODUCTO' name='producto'>
+                </div>
+                <div class='col-xs-3'>
+                  <input type='text' class='form-control' placeholder='CODIGO NACIONAL' name='codigoNaci'>
+                </div>
+              </div>
+              <div class='row'>
+              <div class='col-xs-8'>
+                <div id='datetimepicker1' class='input-append date'>
+                  <input data-format='yyyy/MM/dd hh:mm' type='text' name='fechaini' placeholder='FECHA/HORA INICIAL'></input>
+                  <span class='add-on'>
+                  <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
+                  </span>
+                </div>
+                </div>
+                <div class='col-xs-1'>
+                  <div id='datetimepicker2' class='input-append date'>
+                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='fechafin' placeholder='FECHA/HORA INICIAL'></input>
+                    <span class='add-on'>
+                    <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
+                    </span>
+                  </div>
+                  </div>
+              </div>
+              <br><br>
+                  <button type='submit' class='btn btn-primary btn-lg' name='buscar'>BUSCAR</button>
 
-                <h1><strong>BUSCAR ENCARGO</strong></h1>
-
-                <form name='REGISTRO' method='POST' action='procesos.php?accion=6'>
-
-                NOMBRE:
-                <input id='texto' type='text'  name='nombre'>
-                APELLIDOS:
-                <input id='texto' type='text'  name='apellidos'><br><br>
-                PRODUCTO:
-                <input id='texto' type='text' name='producto'>
-                C.N.
-                <input id='texto' type='text' name='codigoNaci'><br><br>
-                FECHA INICIAL:
-                <input type='text' name='fechaini' class='tcal'  />
-                FECHA FINAL:
-                <input type='text' name='fechafin' class='tcal'  /><br><br>
-                  <input id='boton' type='submit' name='registrar' value='BUSCAR'>
-
-                </form></div>";
+              </form></div>";
       }
       else if(@$_GET["accion"] == 6){
               $nombre = @$_POST["nombre"];
@@ -199,477 +241,41 @@ if(isset($_POST["ENCARGOS"])){
               $codigoN = @$_POST["codigoNaci"];
               $fechaini = @$_POST["fechaini"];
               $fechafin = @$_POST["fechafin"];
-                $fecha2 = date("Y-m-d", strtotime($fechaini));
-                  $fecha3 = date("Y-m-d", strtotime($fechafin));
+                echo $fechaini;
+                echo $fechafin;
+                echo $nombre;
+                echo $apel;
 
 
-            if($nombre != ""){
-              $buscar = mysqli_query($enlace, "SELECT empleados.nombre as empleado, clientes.nombre,clientes.apellidos,clientes.telefono,productos.descripcion,productos.codigonacional,encargos.fecha,encargos.estado,encargos.id,encargos.observaciones,encargos.dispensado,encargos.avisado,encargos.unidades from clientes inner join encargos on clientes.idcliente = encargos.cliente inner join productos on productos.idproducto = encargos.producto inner join empleados on empleados.idempleado = encargos.empleado where clientes.nombre like '$nombre%';");
 
-              echo "<style> table, table td, table tr  {padding:0px;border-spacing: 0px;}table {width:100%; margin:auto;
-                top: 5%;
-                border:1px black solid;
-                border-radius:5px;
-                  min-width:400px;
-                  font-family: Helvetica,Arial;
-                }
-                table td {
-                  padding:6px;
-                }
-                table th {
-                  padding:6px;
-                }
-                #boton{
-                  position: relative; left:45%;top:15%; height:20px;
-                }
-                table tr:first-child td:first-child {
-                  border-radius:5px 0px 0px 0px;
-                }
-                table tr:first-child td:last-child {
-                  border-radius:0px 5px 0px 0px;
-                }
+              $buscar = mysqli_query($enlace, "CALL CONSULTA_PRODUCTOS('$nombre','$apel','$producto','$codigoN','$fechaini','$fechafin')");
 
-                table tr:last-child td:first-child {
-                  border-radius:0px 0px 0px 5px;
-                }
+              echo "
 
-                table tr:last-child td:last-child {
-                  border-radius:0px 0px 5px 0px;
-                }
-
-                table td:not(:last-child) {
-                  border-right:1px #666 solid;
-                }
-
-                table tr:nth-child(2n) {
-                  background: #87CEEB;
-                }
-
-                table tr:nth-child(2n+1){
-                  background: #ADD8E6;
-                }
-
-                table.header tr:not(:first-child):hover, table:not(.header) tr:hover {
-                  background:#E0FFFF;
-                }
-
-                table:not(.header) tr {
-                  text-align: left;
-                }
-
-                table.header tr:first-child {
-                  font-weight: bold;
-                  color:#fff;
-                  background-color: #444;
-                  border-bottom:1px #000 solid;
-                }
-                </style>
-
-                <table><tr><th>EMPLEADO</th><th>NOMBRE</th><th>APELLIDOS</th><th>TELF</th><th>PRODUCTO</th><th>UNIDADES</th><th>C.N.</th><th>FECHA</th><th>¿PEDIDO?</th><th>¿DISPENSADO?</th><th>¿AVISADO?</th><th>OBSERVACIONES</th><th>AVISAR</th><th>DISPENSAR</th></tr>";
+                <table class='table table-bordered'><tr><th>EMPLEADO</th><th>NOMBRE</th><th>APELLIDOS</th><th>TELF</th><th>PRODUCTO</th><th>UNIDADES</th><th>C.N.</th><th>FECHA</th></th><th>PROVEEDOR</th><th>OBSERVACIONES</th><th>MODIFICAR</th></tr>";
                 while($fila = mysqli_fetch_array($buscar)){
                     $id = $fila["id"];
                   echo "<tr>
                         <td>$fila[empleado]</td>
                         <td>$fila[nombre]</td>
                         <td>$fila[apellidos]</td>
-                        <td>$fila[telefono]</td>
-                        <td>$fila[descripcion]</td>
+                        <td>$fila[telef]</td>
+                        <td>$fila[producto]</td>
                         <td>$fila[unidades]</td>
-                        <td>$fila[codigonacional]</td>
-                        <td>$fila[fecha]</td>
-                        <td>$fila[estado]</td>
-                        <td>$fila[dispensado]</td>
-                        <td>$fila[avisado]</td>
+                        <td>$fila[cn]</td>
+                        <td>$fila[fechaHora]</td>
+                        <td>$fila[proveedor]</td>
                         <td>$fila[observaciones]</td>
                         <td><form method='POST' action='procesos.php?accion=20'>
                   				<input name='id' type='hidden' value='$id'>
-
-                  				<input name='comprar' type='submit' value='avisar'>
-                  				</form></td>
-                        <td><form method='POST' action='procesos.php?accion=10'>
-                  				<input name='id' type='hidden' value='$id'>
-
-                  				<input name='comprar' type='submit' value='dispensar'>
-                  				</form></td></tr>";
-                }
+                          <input name='comprar' type='submit' value='MODIFICAR'>
+                  			</form></td>
+                        <td></td></tr>";
+                  }
                 echo "</table>
                 <form id='boton' name='F10' method='POST' action='index.php'>
                 <input type='submit' name='inicio' value='INICIO'></form></body></html>";
 
-
-            }
-            else if($apel != ""){
-              $buscar = mysqli_query($enlace, "SELECT empleados.nombre as empleado, clientes.nombre,clientes.apellidos,clientes.telefono,productos.descripcion,productos.codigonacional,encargos.fecha,encargos.estado,encargos.id,encargos.observaciones,encargos.dispensado,encargos.avisado,encargos.unidades from clientes inner join encargos on clientes.idcliente = encargos.cliente inner join productos on productos.idproducto = encargos.producto inner join empleados on empleados.idempleado = encargos.empleado where clientes.apellidos like '$apel%';");
-
-              echo "<style> table, table td, table tr  {padding:0px;border-spacing: 0px;}table {width:100%; margin:auto;
-                top: 5%;
-                border:1px black solid;
-                border-radius:5px;
-                  min-width:400px;
-                  font-family: Helvetica,Arial;
-                }
-                table td {
-                  padding:6px;
-                }
-                table th {
-                  padding:6px;
-                }
-                #boton{
-                  position: relative; left:45%;top:15%; height:20px;
-                }
-                table tr:first-child td:first-child {
-                  border-radius:5px 0px 0px 0px;
-                }
-                table tr:first-child td:last-child {
-                  border-radius:0px 5px 0px 0px;
-                }
-
-                table tr:last-child td:first-child {
-                  border-radius:0px 0px 0px 5px;
-                }
-
-                table tr:last-child td:last-child {
-                  border-radius:0px 0px 5px 0px;
-                }
-
-                table td:not(:last-child) {
-                  border-right:1px #666 solid;
-                }
-
-                table tr:nth-child(2n) {
-                  background: #87CEEB;
-                }
-
-                table tr:nth-child(2n+1){
-                  background: #ADD8E6;
-                }
-
-                table.header tr:not(:first-child):hover, table:not(.header) tr:hover {
-                  background:#E0FFFF;
-                }
-
-                table:not(.header) tr {
-                  text-align: left;
-                }
-
-                table.header tr:first-child {
-                  font-weight: bold;
-                  color:#fff;
-                  background-color: #444;
-                  border-bottom:1px #000 solid;
-                }
-                </style>
-
-                <table><tr><th>EMPLEADO</th><th>NOMBRE</th><th>APELLIDOS</th><th>TELF</th><th>PRODUCTO</th><th>UNIDADES</th><th>C.N.</th><th>FECHA</th><th>¿PEDIDO?</th><th>¿DISPENSADO?</th><th>¿AVISADO?</th><th>OBSERVACIONES</th><th>AVISAR</th><th>DISPENSAR</th></tr>";
-                while($fila = mysqli_fetch_array($buscar)){
-                    $id = $fila["id"];
-                  echo "<tr>
-                        <td>$fila[empleado]</td>
-                        <td>$fila[nombre]</td>
-                        <td>$fila[apellidos]</td>
-                        <td>$fila[telefono]</td>
-                        <td>$fila[descripcion]</td>
-                        <td>$fila[unidades]</td>
-                        <td>$fila[codigonacional]</td>
-                        <td>$fila[fecha]</td>
-                        <td>$fila[estado]</td>
-                        <td>$fila[dispensado]</td>
-                        <td>$fila[avisado]</td>
-                        <td>$fila[observaciones]</td>
-                        <td><form method='POST' action='procesos.php?accion=20'>
-                  				<input name='id' type='hidden' value='$id'>
-
-                  				<input name='comprar' type='submit' value='avisar'>
-                  				</form></td>
-                        <td><form method='POST' action='procesos.php?accion=10'>
-                  				<input name='id' type='hidden' value='$id'>
-
-                  				<input name='comprar' type='submit' value='dispensar'>
-                  				</form></td></tr>";
-                }
-                echo "</table>
-                <form id='boton' name='F10' method='POST' action='index.php'>
-                <input type='submit' name='inicio' value='INICIO'></form></body></html>";
-            }
-            else if($producto != ""){
-              $buscar = mysqli_query($enlace, "SELECT empleados.nombre as empleado, clientes.nombre,clientes.apellidos,clientes.telefono,productos.descripcion,productos.codigonacional,encargos.fecha,encargos.estado,encargos.id,encargos.observaciones,encargos.dispensado,encargos.avisado,encargos.unidades from clientes inner join encargos on clientes.idcliente = encargos.cliente inner join productos on productos.idproducto = encargos.producto inner join empleados on empleados.idempleado = encargos.empleado where productos.descripcion like '$producto%';");
-
-              echo "<style> table, table td, table tr  {padding:0px;border-spacing: 0px;}table {width:100%; margin:auto;
-                top: 5%;
-                border:1px black solid;
-                border-radius:5px;
-                  min-width:400px;
-                  font-family: Helvetica,Arial;
-                }
-                table td {
-                  padding:6px;
-                }
-                table th {
-                  padding:6px;
-                }
-                #boton{
-                  position: relative; left:45%;top:15%; height:20px;
-                }
-                table tr:first-child td:first-child {
-                  border-radius:5px 0px 0px 0px;
-                }
-                table tr:first-child td:last-child {
-                  border-radius:0px 5px 0px 0px;
-                }
-
-                table tr:last-child td:first-child {
-                  border-radius:0px 0px 0px 5px;
-                }
-
-                table tr:last-child td:last-child {
-                  border-radius:0px 0px 5px 0px;
-                }
-
-                table td:not(:last-child) {
-                  border-right:1px #666 solid;
-                }
-
-                table tr:nth-child(2n) {
-                  background: #87CEEB;
-                }
-
-                table tr:nth-child(2n+1){
-                  background: #ADD8E6;
-                }
-
-                table.header tr:not(:first-child):hover, table:not(.header) tr:hover {
-                  background:#E0FFFF;
-                }
-
-                table:not(.header) tr {
-                  text-align: left;
-                }
-
-                table.header tr:first-child {
-                  font-weight: bold;
-                  color:#fff;
-                  background-color: #444;
-                  border-bottom:1px #000 solid;
-                }
-                </style>
-
-                <table><tr><th>EMPLEADO</th><th>NOMBRE</th><th>APELLIDOS</th><th>TELF</th><th>PRODUCTO</th><th>UNIDADES</th><th>C.N.</th><th>FECHA</th><th>¿PEDIDO?</th><th>¿DISPENSADO?</th><th>¿AVISADO?</th><th>OBSERVACIONES</th><th>AVISAR</th><th>DISPENSAR</th></tr>";
-                while($fila = mysqli_fetch_array($buscar)){
-                    $id = $fila["id"];
-                  echo "<tr>
-                        <td>$fila[empleado]</td>
-                        <td>$fila[nombre]</td>
-                        <td>$fila[apellidos]</td>
-                        <td>$fila[telefono]</td>
-                        <td>$fila[descripcion]</td>
-                        <td>$fila[unidades]</td>
-                        <td>$fila[codigonacional]</td>
-                        <td>$fila[fecha]</td>
-                        <td>$fila[estado]</td>
-                        <td>$fila[dispensado]</td>
-                        <td>$fila[avisado]</td>
-                        <td>$fila[observaciones]</td>
-                        <td><form method='POST' action='procesos.php?accion=20'>
-                  				<input name='id' type='hidden' value='$id'>
-
-                  				<input name='comprar' type='submit' value='avisar'>
-                  				</form></td>
-                        <td><form method='POST' action='procesos.php?accion=10'>
-                  				<input name='id' type='hidden' value='$id'>
-
-                  				<input name='comprar' type='submit' value='dispensar'>
-                  				</form></td></tr>";
-                }
-                echo "</table>
-                <form id='boton' name='F10' method='POST' action='index.php'>
-                <input type='submit' name='inicio' value='INICIO'></form></body></html>";
-            }
-            else if($codigoN != ""){
-              $buscar = mysqli_query($enlace, "SELECT empleados.nombre as empleado, clientes.nombre,clientes.apellidos,clientes.telefono,productos.descripcion,productos.codigonacional,encargos.fecha,encargos.estado,encargos.id,encargos.observaciones,encargos.dispensado,encargos.avisado,encargos.unidades from clientes inner join encargos on clientes.idcliente = encargos.cliente inner join productos on productos.idproducto = encargos.producto inner join empleados on empleados.idempleado = encargos.empleado where productos.codigonacional like '$codigoN%';");
-
-              echo "<style> table, table td, table tr  {padding:0px;border-spacing: 0px;}table {width:100%; margin:auto;
-                top: 5%;
-                border:1px black solid;
-                border-radius:5px;
-                  min-width:400px;
-                  font-family: Helvetica,Arial;
-                }
-                table td {
-                  padding:6px;
-                }
-                table th {
-                  padding:6px;
-                }
-                #boton{
-                  position: relative; left:45%;top:15%; height:20px;
-                }
-                table tr:first-child td:first-child {
-                  border-radius:5px 0px 0px 0px;
-                }
-                table tr:first-child td:last-child {
-                  border-radius:0px 5px 0px 0px;
-                }
-
-                table tr:last-child td:first-child {
-                  border-radius:0px 0px 0px 5px;
-                }
-
-                table tr:last-child td:last-child {
-                  border-radius:0px 0px 5px 0px;
-                }
-
-                table td:not(:last-child) {
-                  border-right:1px #666 solid;
-                }
-
-                table tr:nth-child(2n) {
-                  background: #87CEEB;
-                }
-
-                table tr:nth-child(2n+1){
-                  background: #ADD8E6;
-                }
-
-                table.header tr:not(:first-child):hover, table:not(.header) tr:hover {
-                  background:#E0FFFF;
-                }
-
-                table:not(.header) tr {
-                  text-align: left;
-                }
-
-                table.header tr:first-child {
-                  font-weight: bold;
-                  color:#fff;
-                  background-color: #444;
-                  border-bottom:1px #000 solid;
-                }
-                </style>
-
-                <table><tr><th>EMPLEADO</th><th>NOMBRE</th><th>APELLIDOS</th><th>TELF</th><th>PRODUCTO</th><th>UNIDADES</th><th>C.N.</th><th>FECHA</th><th>¿PEDIDO?</th><th>¿DISPENSADO?</th><th>¿AVISADO?</th><th>OBSERVACIONES</th><th>AVISAR</th><th>DISPENSAR</th></tr>";
-                while($fila = mysqli_fetch_array($buscar)){
-                    $id = $fila["id"];
-                  echo "<tr>
-                        <td>$fila[empleado]</td>
-                        <td>$fila[nombre]</td>
-                        <td>$fila[apellidos]</td>
-                        <td>$fila[telefono]</td>
-                        <td>$fila[descripcion]</td>
-                        <td>$fila[unidades]</td>
-                        <td>$fila[codigonacional]</td>
-                        <td>$fila[fecha]</td>
-                        <td>$fila[estado]</td>
-                        <td>$fila[dispensado]</td>
-                        <td>$fila[avisado]</td>
-                        <td>$fila[observaciones]</td>
-                        <td><form method='POST' action='procesos.php?accion=20'>
-                  				<input name='id' type='hidden' value='$id'>
-
-                  				<input name='comprar' type='submit' value='avisar'>
-                  				</form></td>
-                        <td><form method='POST' action='procesos.php?accion=10'>
-                  				<input name='id' type='hidden' value='$id'>
-
-                  				<input name='comprar' type='submit' value='dispensar'>
-                  				</form></td></tr>";
-                }
-                echo "</table>
-                <form id='boton' name='F10' method='POST' action='index.php'>
-                <input type='submit' name='inicio' value='INICIO'></form></body></html>";
-            }
-            else if($fechaini != "" && $fechafin != ""){
-              $buscar = mysqli_query($enlace, "SELECT empleados.nombre as empleado, clientes.nombre,clientes.apellidos,clientes.telefono,productos.descripcion,productos.codigonacional,encargos.fecha,encargos.estado,encargos.id,encargos.observaciones,encargos.dispensado,encargos.avisado,encargos.unidades from clientes inner join encargos on clientes.idcliente = encargos.cliente inner join productos on productos.idproducto = encargos.producto inner join empleados on empleados.idempleado = encargos.empleado  where encargos.fecha >= '$fecha2' and encargos.fecha <= '$fecha3';");
-
-              echo "<style> table, table td, table tr  {padding:0px;border-spacing: 0px;}table {width:100%; margin:auto;
-                top: 5%;
-                border:1px black solid;
-                border-radius:5px;
-                  min-width:400px;
-                  font-family: Helvetica,Arial;
-                }
-                table td {
-                  padding:6px;
-                }
-                table th {
-                  padding:6px;
-                }
-                #boton{
-                  position: relative; left:45%;top:15%; height:20px;
-                }
-                table tr:first-child td:first-child {
-                  border-radius:5px 0px 0px 0px;
-                }
-                table tr:first-child td:last-child {
-                  border-radius:0px 5px 0px 0px;
-                }
-
-                table tr:last-child td:first-child {
-                  border-radius:0px 0px 0px 5px;
-                }
-
-                table tr:last-child td:last-child {
-                  border-radius:0px 0px 5px 0px;
-                }
-
-                table td:not(:last-child) {
-                  border-right:1px #666 solid;
-                }
-
-                table tr:nth-child(2n) {
-                  background: #87CEEB;
-                }
-
-                table tr:nth-child(2n+1){
-                  background: #ADD8E6;
-                }
-
-                table.header tr:not(:first-child):hover, table:not(.header) tr:hover {
-                  background:#E0FFFF;
-                }
-
-                table:not(.header) tr {
-                  text-align: left;
-                }
-
-                table.header tr:first-child {
-                  font-weight: bold;
-                  color:#fff;
-                  background-color: #444;
-                  border-bottom:1px #000 solid;
-                }
-                </style>
-
-                <table><tr><th>EMPLEADO</th><th>NOMBRE</th><th>APELLIDOS</th><th>TELF</th><th>PRODUCTO</th><th>UNIDADES</th><th>C.N.</th><th>FECHA</th><th>¿PEDIDO?</th><th>¿DISPENSADO?</th><th>¿AVISADO?</th><th>OBSERVACIONES</th><th>AVISAR</th><th>DISPENSAR</th></tr>";
-                while($fila = mysqli_fetch_array($buscar)){
-                    $id = $fila["id"];
-                  echo "<tr>
-                        <td>$fila[empleado]</td>
-                        <td>$fila[nombre]</td>
-                        <td>$fila[apellidos]</td>
-                        <td>$fila[telefono]</td>
-                        <td>$fila[descripcion]</td>
-                        <td>$fila[unidades]</td>
-                        <td>$fila[codigonacional]</td>
-                        <td>$fila[fecha]</td>
-                        <td>$fila[estado]</td>
-                        <td>$fila[dispensado]</td>
-                        <td>$fila[avisado]</td>
-                        <td>$fila[observaciones]</td>
-                        <td><form method='POST' action='procesos.php?accion=20'>
-                          <input name='id' type='hidden' value='$id'>
-
-                          <input name='comprar' type='submit' value='avisar'>
-                          </form></td>
-                        <td><form method='POST' action='procesos.php?accion=10'>
-                          <input name='id' type='hidden' value='$id'>
-
-                          <input name='comprar' type='submit' value='dispensar'>
-                          </form></td></tr>";
-                }
-                echo "</table>
-                <form id='boton' name='F10' method='POST' action='index.php'>
-                <input type='submit' name='inicio' value='INICIO'></form></body></html>";
-            }
 
       }
       else if($_GET["accion"]==10){
