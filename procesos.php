@@ -25,76 +25,81 @@ $(document).ready(function() {
 
 if(isset($_POST["ENCARGOS"])){
 
-        echo "<div id='contenedor3'>
-
-                <h1><strong>AGREGAR ENCARGO</strong></h1>
-
+  echo "<div id='contenedor3'>
+        <h1><strong>AGREGAR ENCARGO</strong></h1>
+            <div class='row'>
+              <div class='col-xs-3'>
                 <form name='REGISTRO' method='POST' action='procesos.php?accion=1' enctype='multipart/form-data'>
-                EMPLEADO:
-                <select name='empleado'>
-                <option value='ANGEL'>ANGEL</option>
-                <option value='MAR'>MAR</option>
-                <option value='PAZ'>PAZ</option>
-                <option value='EMILIO'>EMILIO</option>
-                <option value='GLORIA'>GLORIA</option>
-                <option value='YESI'>YESI</option>
-                <option value='JORGE'>JORGE</option>
-                <option value='NURIA'>NURIA</option>
-                <option value='ANA'>ANA</option>
-                <option value='DANI'>DANI</option>
-                <option value='MARIA'>DANI</option>
-                </select>
-                NOMBRE:
-                <input id='texto' type='text' required name='nombre'>
-                APELLIDOS:
-                <input id='texto' type='text' required name='apellidos'><br><br>
-                TELEFONO:
-                <input id='texto' type='text' name='telefono'>
-                PRODUCTO:
-                <input id='texto' type='text' required name='producto'><br><br>
-                C.N.
-                <input id='texto' type='text' name='codigoNaci'>
-                UNIDADES:
-                <input id='texto' type='number' required name='unidades'><br><br>
-                PROVEEDOR:
-                <select name='proveedor'>
-                <option value='HEFAME'>HEFAME</option>
-                <option value='ALLIANCE'>ALLIANCE</option>
-                <option value='COFAMASA'>COFAMASA</option>
-                <option value='ACTIBIOS'>ACTIBIOS</option>
-                <option value='ORTOPEDIA'>ORTOPEDIA</option>
-                </select>
-                PEDIDO ?:
-                <select name='pedido'>
-                <option value='SI'>SÍ</option>
-                <option value='NO'>NO</option>
-                </select></br></br>
-                OBSERVACIONES:<br>
-                <textarea name='observa' cols='50' rows='12'></textarea><br><br>
 
-                <button type='submit' class='btn btn-primary btn-lg' name='registrar'>REGISTRAR</button>
+                  <select class='form-control' placeholder='.col-xs-3' name='empleado'>
+                  <option value='ANGEL'>ANGEL</option>
+                  <option value='MAR'>MAR</option>
+                  <option value='PAZ'>PAZ</option>
+                  <option value='EMILIO'>EMILIO</option>
+                  <option value='GLORIA'>GLORIA</option>
+                  <option value='YESI'>YESI</option>
+                  <option value='JORGE'>JORGE</option>
+                  <option value='NURIA'>NURIA</option>
+                  <option value='ANA'>ANA</option>
+                  <option value='DANI'>DANI</option>
+                  <option value='MARIA'>MARIA</option>
+                  </select>
+                </div>
+                  <div class='col-xs-3'>
+                  <input type='text' class='form-control' placeholder='NOMBRE CLIENTE' name='nombre'>
+                </div>
+                <div class='col-xs-3'>
+                  <input type='text' class='form-control' placeholder='APELLIDOS CLIENTE' name='apellidos'>
+                </div>
+                <div class='col-xs-3'>
+                  <input type='text' class='form-control' placeholder='TELÉFONO CLIENTE' name='telefono'>
+                </div>
+              </div>
+              <br><br>
+                <div class='col'>
+                  <div class='col-xs-3'>
+                    <input type='text' class='form-control' placeholder='PRODUCTO' name='producto'>
+                  </div>
+                  <div class='col-xs-3'>
+                    <input type='text' class='form-control' placeholder='CODIGO NACIONAL' name='codigoNaci'>
+                  </div>
+                  <div class='col-xs-3'>
+                    <input type='number' class='form-control' placeholder='UNIDADES' required name='unidades'>
+                  </div>
+                  <div class='col-xs-3'>
+                    <select class='form-control' placeholder='.col-xs-3' name='proveedor'>
+                    <option value='HEFAME'>HEFAME</option>
+                    <option value='ALLIANCE'>ALLIANCE</option>
+                    <option value='COFAMASA'>COFAMASA</option>
+                    <option value='ACTIBIOS'>ACTIBIOS</option>
+                    <option value='ORTOPEDIA'>ORTOPEDIA</option>
+                    </select>
+                  </div>
+                </div>
+
+                OBSERVACIONES:<br>
+                <textarea class='form-control' rows='10' name='observa'></textarea><br><br>
+                  <button type='submit' class='btn btn-primary btn-lg' name='registrar'>REGISTRAR</button>
                 </form>
                 <form name='ATRAS' method='POST' action='index.php' enctype='multipart/form-data'>
-                <button type='submit' class='btn btn-primary btn-lg' name='vovler'>ATRÁS</button>
+                  <button type='submit' class='btn btn-primary btn-lg' name='vovler'>ATRÁS</button>
                 </form></div>";
         }
-        else if(@$_GET["accion"] == 1){    //AGREGA CONTACTOS
+        else if(@$_GET["accion"] == 1){    //REGISTRO DE ENCARGOS
           $empleado = @$_POST["empleado"];
           $nombre = @$_POST["nombre"];
           $apellidos = @$_POST["apellidos"];
           $telf = @$_POST["telefono"];
-            $producto = @$_POST["producto"];
-              $codigoNaci = @$_POST["codigoNaci"];
-                $unidades = @$_POST["unidades"];
-                $estado = @$_POST["pedido"];
-                $proveedor = @$_POST["proveedor"];
-                $observaciones = @$_POST["observa"];
-                $fecha = date("Y-m-d H:i");
+          $producto = @$_POST["producto"];
+          $codigoNaci = @$_POST["codigoNaci"];
+          $unidades = @$_POST["unidades"];
+          $estado = @$_POST["pedido"];
+          $proveedor = @$_POST["proveedor"];
+          $observaciones = @$_POST["observa"];
+          $fecha = date("Y-m-d H:i");
 
-                 mysqli_query($enlace,"CALL REGISTRO_ENCARGO('$empleado','$nombre','$apellidos','$telf','$producto','$codigoNaci',$unidades,'$proveedor','$fecha','$observaciones')");
-            echo "<script> alert('ENCARGO REGISTRADO') ; window.location='index.php';</script>";
-
-
+          mysqli_query($enlace,"CALL REGISTRO_ENCARGO('$empleado','$nombre','$apellidos','$telf','$producto','$codigoNaci',$unidades,'$proveedor','$fecha','$observaciones')");
+          echo "<script> alert('ENCARGO REGISTRADO') ; window.location='index.php';</script>";
 
         }
       else if(isset($_POST["BUSCAR"])){
@@ -108,8 +113,7 @@ if(isset($_POST["ENCARGOS"])){
                     <form name='F2' method='POST' action='index.php'>
                     <input  type='submit' value='MENU'></form>
                 </div>
-            </div>
-        ";
+            </div>";
       }
       else if(@$_GET["accion"] == 2){    //AGREGA CONTACTOS
         $nombre = @$_POST["nombre"];
