@@ -9,16 +9,16 @@
     </head>
   <body>
       <div id="contenedor">
+        <div class="container">
           <div id="contenedor2">
-              <h1>MENU</h1>
+            <h1>MENU</h1>
               <form name='F1' method='POST' action='procesos.php'>
               <button type="submit" class="btn btn-primary btn-lg" name='ENCARGOS'>ENCARGOS</button>
               <button type="submit" class="btn btn-primary btn-lg" name='SERVICIOS'>SERVICIOS</button>
               <button type="submit" class="btn btn-primary btn-lg" name='BUSCAR'>BUSCAR</button>
           </form>
-
-          </div>
+        </div>
       </div>
+    </div>
   </body>
-
 </html>
