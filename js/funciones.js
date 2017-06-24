@@ -40,18 +40,11 @@
 		$('#unidades').val(d[6]);
 		$('#observa').val(d[7]);
 	}
-	function actualizarDatos()
+	function actualizarDatos(id,nombre,apellidos,telefono,producto,cn,unidades,observaciones)
 	{
-		id = $('#idpersona').val();
-		nombre = $('#nombre').val();
-		apellidos = $('#apellidos').val();
-		telefono = $('#telefono').val();
-		producto = $('#producto').val();
-		cn = $('#codigoN').val();
-		unidades = $('#unidades').val();
-		observaciones = $('#observa').val();
+		
 
-		cadena = "idpersona" + id +
+		cadena = "idpersona=" + id +
 				"&nombre=" + nombre + 
 				 "&apellidos=" + apellidos + 
 				 "&telefono=" +telefono +
@@ -62,13 +55,14 @@
 
 			$.ajax({
 				type:"POST",
-				url:"modificar.php",
+				url:"procesos.php?accion=15",
 				data:cadena,
 				success:function(r)
 				{
-					if(r==1)
+					if(r)
 					{
-						$('#tabla').load('procesos.php?accion=6');
+
+						$('#tabla').load('procesos.php?accion=4');
 						alertify.success("ACTUALIZADO CON EXITO");
 					}
 					else
