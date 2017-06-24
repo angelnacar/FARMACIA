@@ -11,11 +11,13 @@
       <link rel="stylesheet" href="css/default.css">
       <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="screen" href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+     
       <script src="js/jquery.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
       <script src="js/alertify.js"></script>
       <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
       <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+      <script src="js/funciones.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -34,6 +36,24 @@ $(document).ready(function() {
     $('#datetimepicker2').datetimepicker({
       language: 'pt-BR'
     });
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#ACTUALIZAR').click(function(){
+      nombre = $('#nombre').val();
+      apellidos = $('#apellidos').val();
+      telefono = $('#telefono').val();
+      producto = $('#producto').val();
+      cn = $('#codigoN').val();
+      unidades = $('#unidades').val();
+      observaciones = $('#observa').val();
+      agregardatos(nombre,apellidos,telefono,producto,cn,unidades,observaciones);
+    });
+
+      $('#actualizarDatos').click(function(){
+          actualizarDatos();
+      });
   });
 </script>
 
@@ -125,8 +145,17 @@ if(isset($_POST["ENCARGOS"])){
           $observaciones = @$_POST["observa"];
           $fecha = date("Y-m-d H:i");
 
-          mysqli_query($enlace,"CALL REGISTRO_ENCARGO('$empleado','$nombre','$apellidos','$telf','$producto','$codigoNaci',$unidades,'$proveedor','$fecha','$observaciones')");
-          echo "<script> alert('ENCARGO REGISTRADO') ; window.location='index.php';</script>";
+         $resultado = mysqli_query($enlace,"CALL REGISTRO_ENCARGO('$empleado','$nombre','$apellidos','$telf','$producto','$codigoNaci',$unidades,'$proveedor','$fecha','$observaciones')");
+
+         if(resultado)
+         {
+             echo "<script> alert('ENCARGO REGISTRADO') ; window.location='index.php';</script>";
+         }
+         else 
+         {
+            echo "<script> alert('FALLO EN REGISTRO, VUELVA A INTENTARLO') ; window.location='procesos.php?ENCARGOS';</script>";
+         }
+         
 
         }
       else if(isset($_POST["BUSCAR"])){
@@ -261,9 +290,44 @@ if(isset($_POST["ENCARGOS"])){
                   }
 
             $buscar = mysqli_query($enlace, "CALL CONSULTA_PRODUCTOS('$nombre','$apel','$producto','$codigoN','$fechaini','$fechafin')");
-      ?>
-              <div class='container'>
 
+
+              
+      ?>
+        
+              
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Actualizar datos</h4>
+                      </div>
+                      <div class="modal-body">
+                          <input  hidden="" id="idpersona" name="">
+                         <label>Nombre</label>
+                          <input type="" name=""  id="nombre">
+                          <label>Apellidos</label>
+                          <input type="" name="" id="apellidos">
+                          <label>Telefono</label>
+                          <input type="" name="" id="telefono">
+                          <label>Producto</label>
+                          <input type="" name="" id="producto">
+                          <label>C.N.</label>
+                          <input type="" name="" id="codigoN">
+                          <label>Unidades</label>
+                          <input type="" name="" id="unidades">
+                          <label>Observaciones</label>
+                          <input type="" name="" id="observa">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">CERRAR</button>
+                        <button type="button"  class="btn btn-primary" id="actualizarDatos">ACTUALIZAR</button>
+                       </div>
+                      </div>
+                    </div>
+                  </div>
+                    <div class='container'>
                       <div id='tabla'>
 
                         <div class='row'>
@@ -286,26 +350,38 @@ if(isset($_POST["ENCARGOS"])){
                           </tr>
                 <?php
                 while($fila = mysqli_fetch_array($buscar)){
-                  $id = $fila["id"];
-                echo "<tr>
-                      <td>$fila[empleado]</td>
-                      <td>$fila[nombre]</td>
-                      <td>$fila[apellidos]</td>
-                      <td>$fila[telef]</td>
-                      <td>$fila[producto]</td>
-                      <td>$fila[cn]</td>
-                      <td>$fila[unidades]</td>
-                      <td>$fila[proveedor]</td>
-                      <td>$fila[fechaHora]</td>
-                      <td>$fila[observaciones]</td>
-                      <td> <button type='button' class='btn btn-warning glyphicon glyphicon-pencil' value='$id'></button> </td>
-                    </tr>";
+                  $id = $fila["id"] ."||".
+                        $fila["nombre"] ."||".
+                        $fila["apellidos"] ."||".
+                        $fila["telef"] ."||".
+                        $fila["producto"] ."||".
+                        $fila["cn"] ."||".
+                        $fila["unidades"] ."||".
+                    $fila["observaciones"];
+                     ?> 
+                <tr>
+                      <td><?php echo $fila[1] ?></td>
+                      <td><?php echo $fila[2] ?></td>
+                      <td><?php echo $fila[3] ?></td>
+                      <td><?php echo $fila[4] ?></td>
+                      <td><?php echo $fila[5] ?></td>
+                      <td><?php echo $fila[6] ?></td>
+                      <td><?php echo $fila[7] ?></td>
+                      <td><?php echo $fila[8] ?></td>
+                      <td><?php echo $fila[11] ?></td>
+                      <td><?php echo $fila[12] ?></td>
+                      <td> <button type="button" class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="mostrarForm('<?php echo $id ?>')"></button> 
+                      </td>
+                    </tr>
+               <?php
                     }
+                 
                 ?>
-                </table></div>
-                       </div>
-                      </div>
-                    </div>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
 
 <?php
       }
@@ -706,11 +782,19 @@ if(isset($_POST["ENCARGOS"])){
 
     }
       else if($_GET["accion"]==15){
-         $cod = $_POST["id"];
-            mysqli_query($enlace, "UPDATE encargos SET estado = 'SI' where id='$cod'");
 
-            echo "<script>alert('CLIENTE CONFIRMADO');
-            window.location='index.php';</script>";
+          $i = $_POST["id"];
+          $a = $_POST['nombre'];
+          $b = $_POST['apellidos'];
+          $c = $_POST['telefono'];
+          $d = $_POST['producto'];
+          $e = $_POST['cn'];
+          $f = $_POST['unidades'];
+          $g = $_POST['observaciones'];
+
+            $sql = mysqli_query($enlace,"UPDATE encargos set nombre = '$a' where id = '$i' ");
+
+            
 
       }
       else if($_GET["accion"]==20){

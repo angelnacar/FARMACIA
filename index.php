@@ -8,9 +8,9 @@
           <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
   <body>
+    <div class="container">
       <div id="contenedor">
-        <div class="container">
-          <div id="contenedor2">
+        <div id="contenedor2">
             <h1>MENU</h1>
               <form name='F1' method='POST' action='procesos.php'>
               <button type="submit" class="btn btn-primary btn-lg" name='ENCARGOS'>ENCARGOS</button>
