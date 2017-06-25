@@ -1,13 +1,10 @@
 
-	function agregarDatos(nombrem,apellidos,telefono,producto,cn,unidades,observaciones)
+	function agregarDatos(nombrem,apellidos,telefono,fecha)
 	{
 		cadena = "nombre=" + nombre + 
 				 "&apellidos=" + apellidos + 
 				 "&telefono=" +telefono +
-				 "&producto=" + producto +
-				 "&cn=" + cn +
-				 "&unidades=" + unidades +
-				 "&observaciones=" + observaciones;
+				 "&pfecha=" + fecha;
 
 			$.ajax({
 				type:"POST",

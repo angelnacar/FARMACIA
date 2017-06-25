@@ -451,30 +451,80 @@ if(isset($_POST["ENCARGOS"])){
           $fecha = $_POST["fecha"];
           $fecha2 = date("Y-m-d", strtotime($fecha));
 ?>
-          <!-- Button trigger modal -->
+          <!-- Agregar servicios -->
 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
   AGREGAR SERVICIO
 </button>
 
-<!-- Modal -->
+<!-- Modificar servicios -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">Modificar</h4>
       </div>
       <div class="modal-body">
-        ...
+        <label>Nombre</label>
+        <input type="" name=""  id="nombre">
+        <label>Apellidos</label>
+        <input type="" name="" id="apellidos">
+        <label>Telefono</label>
+        <input type="" name="" id="telefono">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
       </div>
     </div>
   </div>
 </div>
 
+     <div class='container'>
+                      <div id='tabla'>
+
+                        <div class='row'>
+                          <div class'col-sm-12'>
+                              <h2>RESULTADOS</h2>
+                            <table class='table table-hover table-condensed table-bordered'>
+                          <tr>
+                            
+                            <td>NOMBRE</td>
+                            <td>APELLIDOS</td>
+                            <td>TELEFONO</td>
+                            <td>CONFIRMADO</td>
+                            <td>FECHA/HORA</td>
+                            <td>MODIFICAR</td>
+                            <td>ELIMINAR</td>
+
+                          </tr>
+                <?php
+                    $buscar = mysqli_query($enlace, "CALL CONSULTA_SERVICIOS('$nombre','$apellidos','$fecha','$servicio')");
+
+                while($fila = mysqli_fetch_array($buscar)){
+                  $id = $fila["id"] ."||".
+                        $fila["nombre"] ."||".
+                        $fila["apellidos"] ."||".
+                        $fila["fechaHora"];
+                        
+                     ?> 
+                <tr>
+                      
+                      <td><?php echo $fila[2] ?></td>
+                      <td><?php echo $fila[3] ?></td>
+                      <td><?php echo $fila[4] ?></td>
+                      <td><?php echo $fila[10] ?></td>
+                      <td><?php echo $fila[11] ?></td>
+                  
+                      <td> <button type="button" class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="mostrarForm('<?php echo $id ?>')"></button> 
+                      </td>
+                      <td> <button type="button" class="btn btn-danger glyphicon glyphicon-remove" data-toggle="modal" data-target="#myModal" onclick="mostrarForm('<?php echo $id ?>')"></button> 
+                      </td>
+                    </tr>
+                <?php
+
+              }
+             ?> 
    <?php     
     }
       else if($_GET["accion"]==15){
