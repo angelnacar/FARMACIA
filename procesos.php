@@ -67,7 +67,20 @@ $(document).ready(function() {
       
       actualizarDatos(id,nombre,apellidos,telefono,producto,cn,unidades,observaciones);
       });
-  });
+
+       $('#actualizarServicios').click(function(){
+
+      id = $('#id2').val();
+      nombre = $('#nombre2').val();
+      apellidos = $('#apellidos2').val();
+      telefono = $('#telefono2').val();
+      confirmado = $('#confi2').val();
+      fecha = $('#fecha2').val();
+     
+      actualizarSer(id,nombre,apellidos,telefono,confirmado,fecha);
+    });
+   });
+
 </script>
 
 </head>
@@ -420,28 +433,33 @@ if(isset($_POST["ENCARGOS"])){
       }
       else if($_GET["accion"]==5){
       ?>
-        <html><body><div id='contenedor3'>
+      <div class="container">
+        <div id='contenedor3'>
 
                 <h1><strong>BUSCAR SERVICIO</strong></h1>
-
+              
                 <form name='REGISTRO' method='POST' action='procesos.php?accion=11'>
 
-                NOMBRE:
+                <label>NOMBRE</label>
                 <input id='texto' type='text'  name='nombre'>
-                APELLIDOS:
+                <label>APELLIDOS</label>
                 <input id='texto' type='text'  name='apellidos'><br><br>
-                SERVICIO:
+                <label>SERVICIO</label>
                 <select name='servicio'>
                 <option value='3'>N/A</option>
                 <option value='1'>DIETÉTICA</option>
                 <option value='2'>ESTÉTICA</option>
                 </select>
-                FECHA:
-                <input type='text' name='fecha' class='tcal'  /><br><br>
+                <label>FECHA/HORA</label>
+                <div id='datetimepicker1' class='input-append date'>
+                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='fecha' placeholder='FECHA/HORA INICIAL'></input>
+                      <span class='add-on'>
+                      <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
+                      </span>
+                  </div>
+                  <button type="submit" class="btn btn-primary">BUSCAR</button>
 
-                  <input id='boton' type='submit' name='registrar' value='BUSCAR'>
-
-                </form></id></body></html>
+                </form></div></div>
 <?php
       }
       else if($_GET["accion"]==11){
@@ -449,7 +467,12 @@ if(isset($_POST["ENCARGOS"])){
           $apellidos = $_POST["apellidos"];
           $servicio = $_POST["servicio"];
           $fecha = $_POST["fecha"];
-          $fecha2 = date("Y-m-d", strtotime($fecha));
+
+          if($fecha == '')
+          {
+            $fecha = '9999/12/30';
+          }
+          
 ?>
           <!-- Agregar servicios -->
 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
@@ -465,16 +488,21 @@ if(isset($_POST["ENCARGOS"])){
         <h4 class="modal-title" id="myModalLabel">Modificar</h4>
       </div>
       <div class="modal-body">
+         <input type="hidden" name="" id="id2">
         <label>Nombre</label>
-        <input type="" name=""  id="nombre">
+        <input type="" name=""  id="nombre2">
         <label>Apellidos</label>
-        <input type="" name="" id="apellidos">
+        <input type="" name="" id="apellidos2">
         <label>Telefono</label>
-        <input type="" name="" id="telefono">
+        <input type="" name="" id="telefono2">
+        <label>FECHA</label>
+        <input type="" name="" id="fecha2">
+        <label>CONFIRMAR</label>
+        <input type="" name="" id="confi2">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-primary" id="actualizarServicios">Guardar</button>
       </div>
     </div>
   </div>
@@ -489,13 +517,13 @@ if(isset($_POST["ENCARGOS"])){
                             <table class='table table-hover table-condensed table-bordered'>
                           <tr>
                             
-                            <td>NOMBRE</td>
-                            <td>APELLIDOS</td>
-                            <td>TELEFONO</td>
-                            <td>CONFIRMADO</td>
-                            <td>FECHA/HORA</td>
-                            <td>MODIFICAR</td>
-                            <td>ELIMINAR</td>
+                            <th>NOMBRE</th>
+                            <th>APELLIDOS</th>
+                            <th>TELEFONO</th>
+                            <th>CONFIRMADO</th>
+                            <th>FECHA/HORA</th>
+                            <th>MODIFICAR</th>
+                            <th>ELIMINAR</th>
 
                           </tr>
                 <?php
@@ -505,7 +533,10 @@ if(isset($_POST["ENCARGOS"])){
                   $id = $fila["id"] ."||".
                         $fila["nombre"] ."||".
                         $fila["apellidos"] ."||".
+                        $fila["telef"] ."||".
+                        $fila["confirmado"] ."||".
                         $fila["fechaHora"];
+
                         
                      ?> 
                 <tr>
@@ -516,7 +547,7 @@ if(isset($_POST["ENCARGOS"])){
                       <td><?php echo $fila[10] ?></td>
                       <td><?php echo $fila[11] ?></td>
                   
-                      <td> <button type="button" class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="mostrarForm('<?php echo $id ?>')"></button> 
+                      <td> <button type="button" class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="mostrarFormSer('<?php echo $id ?>')"></button> 
                       </td>
                       <td> <button type="button" class="btn btn-danger glyphicon glyphicon-remove" data-toggle="modal" data-target="#myModal" onclick="mostrarForm('<?php echo $id ?>')"></button> 
                       </td>
@@ -544,11 +575,14 @@ if(isset($_POST["ENCARGOS"])){
 
       }
       else if($_GET["accion"]==20){
-         $cod = $_POST["id"];
-            mysqli_query($enlace, "UPDATE encargos SET avisado = 'SI' where id='$cod'");
+          $i = $_POST["id"];
+          $a = $_POST['nombre'];
+          $b = $_POST['apellidos'];
+          $c = $_POST['telefono'];
+          $d = $_POST['confirmado'];
+          $e = $_POST['fecha'];
 
-            echo "<script>alert('CLIENTE AVISADO');
-            window.location='index.php';</script>";
+          mysqli_query($enlace,"UPDATE encargos SET nombre = '$a',apellidos = '$b',telef = '$c',confirmado = '$d',fechaHora = '$e' where id = '$i'");
 
       }
 

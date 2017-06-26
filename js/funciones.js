@@ -25,7 +25,6 @@
 	}
 	function mostrarForm(datos)
 	{
-
 		d = datos.split('||');
 
 		$('#idpersona').val(d[0]);
@@ -36,6 +35,20 @@
 		$('#codigoN').val(d[5]);
 		$('#unidades').val(d[6]);
 		$('#observa').val(d[7]);
+		
+		
+	}
+	function mostrarFormSer(datos)
+	{
+
+		d = datos.split('||');
+
+		$('#id2').val(d[0]);
+		$('#nombre2').val(d[1]);
+		$('#apellidos2').val(d[2]);
+		$('#telefono2').val(d[3]);
+		$('#fecha2').val(d[5]);
+		$('#confi2').val(d[4]);
 	}
 	function actualizarDatos(id,nombre,apellidos,telefono,producto,cn,unidades,observaciones)
 	{
@@ -60,6 +73,35 @@
 					{
 
 						$('#tabla').load('procesos.php?accion=4');
+						alertify.success("ACTUALIZADO CON EXITO");
+					}
+					else
+					{
+						alertify.error("ERROR DE ACTUALIZACION");
+					}
+				}
+			});
+	}
+
+	function actualizarSer(id,nombre,apellidos,telefono,confirmado,fecha)
+	{
+		cadena = "id=" + id +
+				"&nombre=" + nombre + 
+				 "&apellidos=" + apellidos + 
+				 "&telefono=" +telefono +
+				 "&confirmado=" + confirmado +
+				 "&fecha=" + fecha;
+
+				 $.ajax({
+				type:"POST",
+				url:"procesos.php?accion=20",
+				data:cadena,
+				success:function(r)
+				{
+					if(r)
+					{
+
+						$('#tabla').load('procesos.php?accion=5');
 						alertify.success("ACTUALIZADO CON EXITO");
 					}
 					else
