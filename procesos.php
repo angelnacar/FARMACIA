@@ -531,7 +531,7 @@ if(isset($_POST["ENCARGOS"])){
         <input type="" name="" id="telefono2">
         <label>FECHA</label>
         
-        <div id='datetimepicker1' class='input-append date'>
+        <div id='datetimepicker2' class='input-append date'>
                     <input data-format='yyyy/MM/dd hh:mm' type='text' name='' id="fecha2"></input>
                       <span class='add-on'>
                       <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
@@ -563,7 +563,7 @@ if(isset($_POST["ENCARGOS"])){
                             <th>CONFIRMADO</th>
                             <th>FECHA/HORA</th>
                             <th>MODIFICAR</th>
-                            <th>ELIMINAR</th>
+                            
 
                           </tr>
                 <?php
@@ -588,8 +588,6 @@ if(isset($_POST["ENCARGOS"])){
                       <td><?php echo $fila[11] ?></td>
                   
                       <td> <button type="button" class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="mostrarFormSer('<?php echo $id ?>')"></button> 
-                      </td>
-                      <td> <button type="button" class="btn btn-danger glyphicon glyphicon-remove" data-toggle="modal" data-target="#myModal" onclick="mostrarForm('<?php echo $id ?>')"></button> 
                       </td>
                     </tr>
                 <?php
