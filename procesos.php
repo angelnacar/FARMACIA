@@ -40,16 +40,7 @@ $(document).ready(function() {
 </script>
 <script type="text/javascript">
   $(document).ready(function(){
-    $('#ACTUALIZAR').click(function(){
-      nombre = $('#nombre').val();
-      apellidos = $('#apellidos').val();
-      telefono = $('#telefono').val();
-      producto = $('#producto').val();
-      cn = $('#codigoN').val();
-      unidades = $('#unidades').val();
-      observaciones = $('#observa').val();
-      agregardatos(nombre,apellidos,telefono,producto,cn,unidades,observaciones);
-    });
+   
       $('#botonAtras').click(function(){
           window.location="index.php";
       });
@@ -79,8 +70,19 @@ $(document).ready(function() {
      
       actualizarSer(id,nombre,apellidos,telefono,confirmado,fecha);
     });
-   });
 
+        $('#agregarServicio').click(function(){
+
+          nombre3 = $('#nombre3').val();
+          apellidos3 = $('#apellidos3').val();
+          telefono3 = $('#telefono3').val();
+          fecha3 = $('#fecha3').val();
+
+         agregarDatos(nombre3,apellidos3,telefono3,fecha3);
+       });
+
+
+   });
 </script>
 
 </head>
@@ -240,7 +242,7 @@ if(isset($_POST["ENCARGOS"])){
       </div>
 <?php
     }
-    else if(@$_GET["accion"] == 3){    //AGREGA CONTACTOS
+    else if(@$_GET["accion"] == 3){    
       $nombre = @$_POST["nombre"];
       $apellidos = @$_POST["apellidos"];
       $telf = @$_POST["telefono"];
@@ -452,7 +454,7 @@ if(isset($_POST["ENCARGOS"])){
                 </select>
                 <label>FECHA/HORA</label>
                 <div id='datetimepicker1' class='input-append date'>
-                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='fecha' placeholder='FECHA/HORA INICIAL'></input>
+                    <input data-format='yyyy/MM/dd' type='text' name='fecha' placeholder='FECHA'></input>
                       <span class='add-on'>
                       <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
                       </span>
@@ -475,9 +477,41 @@ if(isset($_POST["ENCARGOS"])){
           
 ?>
           <!-- Agregar servicios -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  AGREGAR SERVICIO
+<button type="button" class="btn btn-primary glyphicon glyphicon-plus" data-toggle="modal" data-target="#modalNuevo">
+  Agregar servicio
 </button>
+<div class="modal fade" id="modalNuevo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modificar</h4>
+      </div>
+      <div class="modal-body">
+         
+        <label>Nombre</label>
+        <input type="" name=""  id="nombre3">
+        <label>Apellidos</label>
+        <input type="" name="" id="apellidos3">
+        <label>Telefono</label>
+        <input type="" name="" id="telefono3">
+        <label>FECHA</label>
+        
+        <div id='datetimepicker1' class='input-append date'>
+                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='' id="fecha3"></input>
+                      <span class='add-on'>
+                      <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
+                      </span>
+                  </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="agregarServicio">Agregar servicio</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modificar servicios -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -496,13 +530,19 @@ if(isset($_POST["ENCARGOS"])){
         <label>Telefono</label>
         <input type="" name="" id="telefono2">
         <label>FECHA</label>
-        <input type="" name="" id="fecha2">
+        
+        <div id='datetimepicker1' class='input-append date'>
+                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='' id="fecha2"></input>
+                      <span class='add-on'>
+                      <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
+                      </span>
+                  </div>
         <label>CONFIRMAR</label>
         <input type="" name="" id="confi2">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" id="actualizarServicios">Guardar</button>
+        <button type="button" class="btn btn-primary" id="actualizarServicios">Modificar</button>
       </div>
     </div>
   </div>
@@ -585,6 +625,20 @@ if(isset($_POST["ENCARGOS"])){
           mysqli_query($enlace,"UPDATE encargos SET nombre = '$a',apellidos = '$b',telef = '$c',confirmado = '$d',fechaHora = '$e' where id = '$i'");
 
       }
+
+      else if($_GET["accion"]==21){
+          
+          $a = $_POST['nombre'];
+          $b = $_POST['apellidos'];
+          $c = $_POST['telefono'];
+          $d = 'NO';
+          $e = $_POST['fecha'];
+
+          mysqli_query($enlace,"SELECT REGISTRO_SERVICIO('$a','$b','$c',1,'$e')");
+
+      }
+
+
 
 ?>
 </body>

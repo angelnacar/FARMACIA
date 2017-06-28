@@ -1,28 +1,31 @@
 
-	function agregarDatos(nombrem,apellidos,telefono,fecha)
+	function agregarDatos(nombre,apellidos,telefono,fecha)
 	{
 		cadena = "nombre=" + nombre + 
 				 "&apellidos=" + apellidos + 
 				 "&telefono=" +telefono +
-				 "&pfecha=" + fecha;
+				 "&fecha=" + fecha;
 
-			$.ajax({
+				  $.ajax({
 				type:"POST",
-				url:"procesos.php?accion=25",
+				url:"procesos.php?accion=21",
 				data:cadena,
 				success:function(r)
 				{
-					if(r==1)
+					if(r)
 					{
-						alertify.success("ACTUALIZADO CON EXITO");
+
+						$('#tabla').load('procesos.php?accion=5');
+						alertify.success("AGREGADO CON EXITO");
 					}
-					else if(r==0)
+					else
 					{
 						alertify.error("ERROR DE ACTUALIZACION");
 					}
 				}
 			});
 	}
+
 	function mostrarForm(datos)
 	{
 		d = datos.split('||');
