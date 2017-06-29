@@ -9,9 +9,9 @@
     </head>
   <body>
     <div class="container">
-      <div id="contenedor">
-        <div id="contenedor2">
-            <h1>MENU</h1>
+      <div id="contenedor3">
+        
+            <h1>MENÚ</h1>
               <form name='F1' method='POST' action='procesos.php'>
               <button type="submit" class="btn btn-primary btn-lg" name='ENCARGOS'>ENCARGOS</button>
               <button type="submit" class="btn btn-primary btn-lg" name='SERVICIOS'>SERVICIOS</button>
@@ -19,6 +19,6 @@
           </form>
         </div>
       </div>
-    </div>
+  
   </body>
 </html>

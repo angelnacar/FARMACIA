@@ -14,6 +14,7 @@
      
       <script src="js/jquery.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
+      <script src="js/jquery.tablesorter.min"></script>
       <script src="js/alertify.js"></script>
       <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
       <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
@@ -77,12 +78,57 @@ $(document).ready(function() {
           apellidos3 = $('#apellidos3').val();
           telefono3 = $('#telefono3').val();
           fecha3 = $('#fecha3').val();
+          servici = $('#servi').val();
 
-         agregarDatos(nombre3,apellidos3,telefono3,fecha3);
+         agregarDatos(nombre3,apellidos3,telefono3,fecha3,servici);
        });
+    });
+</script>
 
+<script type="text/javascript">  <!-- PARA NO PERMITIR SALTOS DE LINEA EN LOS FORMULARIOS -->
+$(document).ready(function() {
+    $(".form-control").keypress(function(e) {
+        if (e.which == 13) {
+            return false;
+        }
+    });
 
-   });
+     $('th').click(function() {
+    var table = $(this).parents('table').eq(0)
+    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+    this.asc = !this.asc
+    if (!this.asc) {
+      rows = rows.reverse()
+    }
+    for (var i = 0; i < rows.length; i++) {
+      table.append(rows[i])
+    }
+    setIcon($(this), this.asc);
+  })
+
+  function comparer(index) {
+    return function(a, b) {
+      var valA = getCellValue(a, index),
+        valB = getCellValue(b, index)
+      return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB)
+    }
+  }
+
+  function getCellValue(row, index) {
+    return $(row).children('td').eq(index).html()
+  }
+
+  function setIcon(element, asc) {
+    $("th").each(function(index) {
+      $(this).removeClass("sorting");
+      $(this).removeClass("asc");
+      $(this).removeClass("desc");
+    });
+    element.addClass("sorting");
+    if (asc) element.addClass("asc");
+    else element.addClass("desc");
+  }
+});
 </script>
 
 </head>
@@ -101,7 +147,7 @@ if(isset($_POST["ENCARGOS"])){
             <div class='row'>
               <div class='col-xs-3'>
                 <form name='REGISTRO' method='POST' action='procesos.php?accion=1' enctype='multipart/form-data'>
-
+                <label>EMPLEADO</label>
                   <select class='form-control' placeholder='.col-xs-3' name='empleado'>
                   <option value='ANGEL'>ANGEL</option>
                   <option value='MAR'>MAR</option>
@@ -117,10 +163,10 @@ if(isset($_POST["ENCARGOS"])){
                   </select>
                 </div>
                   <div class='col-xs-3'>
-                  <input type='text' class='form-control' placeholder='NOMBRE CLIENTE' name='nombre'>
+                  <input type='text' class='form-control' placeholder='NOMBRE CLIENTE' name='nombre' required="">
                 </div>
                 <div class='col-xs-3'>
-                  <input type='text' class='form-control' placeholder='APELLIDOS CLIENTE' name='apellidos'>
+                  <input type='text' class='form-control' placeholder='APELLIDOS CLIENTE' name='apellidos' required="">
                 </div>
                 <div class='col-xs-3'>
                   <input type='text' class='form-control' placeholder='TELÉFONO CLIENTE' name='telefono'>
@@ -129,7 +175,7 @@ if(isset($_POST["ENCARGOS"])){
 
                 <div class='col'>
                   <div class='col-xs-3'>
-                    <input type='text' class='form-control' placeholder='PRODUCTO' name='producto'>
+                    <input type='text' class='form-control' placeholder='PRODUCTO' name='producto' required="">
                   </div>
                   <div class='col-xs-3'>
                     <input type='text' class='form-control' placeholder='CODIGO NACIONAL' name='codigoNaci'>
@@ -138,6 +184,7 @@ if(isset($_POST["ENCARGOS"])){
                     <input type='number' class='form-control' placeholder='UNIDADES' required name='unidades'>
                   </div>
                   <div class='col-xs-3'>
+                    <label>PROVEEDOR</label>
                     <select class='form-control' placeholder='.col-xs-3' name='proveedor'>
                     <option value='HEFAME'>HEFAME</option>
                     <option value='ALLIANCE'>ALLIANCE</option>
@@ -149,13 +196,11 @@ if(isset($_POST["ENCARGOS"])){
                 </div>
 
 
-                OBSERVACIONES:<br>
+                <label>OBSERVACIONES</label><br>
                 <textarea class='form-control' rows='10' name='observa'></textarea><br><br>
-                  <button type='submit' class='btn btn-primary btn-lg' name='registrar'>REGISTRAR</button>
-                </form>
-                <form name='ATRAS' method='POST' action='index.php' enctype='multipart/form-data'>
-                  <button type='submit' class='btn btn-primary btn-lg' name='vovler'>ATRÁS</button>
-                </form>
+                  <button type='submit' class='btn btn-success btn-lg glyphicon glyphicon-floppy-disk' name='registrar'> Guardar</button>
+                </form><br>
+                <button type="submit" class="btn btn-warning glyphicon glyphicon-chevron-left" id="botonAtras"> Inicio</button>
             </div>
           </div>
     <?php
@@ -190,19 +235,19 @@ if(isset($_POST["ENCARGOS"])){
     ?>
         <div class="container">
           <div id='contenedor3'>
-              <h1>BUSCAR</h1>
+              <h1>QUÉ BUSCAR</h1>
             <div class='row'>
               <div class='col-xs-5'>
                 <form name='F1' method='POST' action='procesos.php?accion=5'>
-                  <button type='submit' class='btn btn-primary btn-lg' name='vovler'>SERVICIOS</button></form>
+                  <button type='submit' class='btn btn-info btn-lg glyphicon glyphicon-triangle-right' name='vovler'> Servicios</button></form>
               </div>
               <div class='col-xs-2'>
                 <form name='F2' method='POST' action='procesos.php?accion=4'>
-                  <button type='submit' class='btn btn-primary btn-lg' name='vovler'>ENCARGOS</button></form>
+                  <button type='submit' class='btn btn-primary btn-lg glyphicon glyphicon-triangle-right' name='vovler'> Encargos</button></form>
               </div>
               <div class='col-xs-5'>
                 <form name='F2' method='POST' action='index.php'>
-                  <button type='submit' class='btn btn-primary btn-lg' name='vovler'>INICIO</button></form>
+                  <button type='submit' class='btn btn-danger btn-lg glyphicon glyphicon-triangle-left' name='vovler'> Inicio</button></form>
               </div>
             </div>
           </div>
@@ -218,14 +263,14 @@ if(isset($_POST["ENCARGOS"])){
 
               <form name='REGISTRO' method='POST' action='procesos.php?accion=3'>
               <label>NOMBRE</label>
-              <input id='texto' type='text'  name='nombre'><br><br>
+              <input id='texto' type='text'  name='nombre' required=""><br><br>
               <label>APELLIDOS</label>
-              <input id='texto' type='text'  name='apellidos'><br><br>
+              <input id='texto' type='text'  name='apellidos' required=""><br><br>
               <label>TELEFONO</label>
               <input id='texto' type='text'  name='telefono'><br><br>
               <label>FECHA/HORA</label>
               <div id='datetimepicker1' class='input-append date'>
-                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='fecha' placeholder='FECHA/HORA INICIAL'></input>
+                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='fecha' placeholder='FECHA/HORA INICIAL' required=""></input>
                       <span class='add-on'>
                       <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
                       </span>
@@ -235,9 +280,9 @@ if(isset($_POST["ENCARGOS"])){
               <option value='1'>DIETÉTICA</option>
               <option value='2'>ESTÉTICA</option>
               </select></br></br>
-             <button type="submit" class="btn btn-primary btn-lg" name="registrar">REGISTRAR</button><br>
+             <button type='submit' class='btn btn-success btn-lg glyphicon glyphicon-floppy-disk' name='registrar'> Guardar</button>
             </form>
-              <button id="botonAtras" class="btn btn-primary btn-lg">ATRAS</button>
+              <button type="submit" class="btn btn-warning glyphicon glyphicon-chevron-left" id="botonAtras"> Inicio</button>
         </div>
       </div>
 <?php
@@ -310,8 +355,9 @@ if(isset($_POST["ENCARGOS"])){
               </div>
             </div>
               <br><br>
-                  <button type='submit' class='btn btn-primary btn-lg' name='buscar'>BUSCAR</button>
+                  <button type='submit' class='btn btn-success glyphicon glyphicon-search' name='buscar'> Buscar</button>
                 </form>
+                  <button type="submit" class="btn btn-warning glyphicon glyphicon-chevron-left" id="botonAtras"> Inicio</button>
         </div>
       </div>
     <?php
@@ -323,7 +369,7 @@ if(isset($_POST["ENCARGOS"])){
               $codigoN = @$_POST["codigoNaci"];
               $fechaini = @$_POST["fechaini"];
               $fechafin = @$_POST["fechafin"];
-                  if($fechaini == '' && $fechafin == '') //solución para los casos en que devuelve falso la consulta a la bbdd
+                  if($fechaini == '' && $fechafin == '') //solución para los casos en que devuelve falso la consulta a la bbdd por falta de fecha
                   {
                     $fechaini = '9999/12/30';
                     $fechafin = '9999/12/30';
@@ -368,36 +414,37 @@ if(isset($_POST["ENCARGOS"])){
                     </div>
                   </div>
                     <div class='container'>
-                      <div id='tabla'>
+                       <div id="tabla">
 
                         <div class='row'>
                           <div class'col-sm-12'>
-                              <h2>RESULTADOS</h2>
+                          
+                              <h2>ENCARGOS DE <?php echo $fechaini,' - ',$fechafin?></h2>
                             <table class='table table-hover table-condensed table-bordered'>
                           <tr>
                             <th>EMPLEADO</th>
-                            <td>NOMBRE</td>
-                            <td>APELLIDOS</td>
-                            <td>TELEFONO</td>
-                            <td>PRODUCTO</td>
-                            <td>C.N.</td>
-                            <td>UDS</td>
-                            <td>PROVEEDOR</td>
-                            <td>FECHA/HORA</td>
-                            <td>OBSERVACIONES</td>
-                            <td>MODIFICAR</td>
+                            <th>NOMBRE</th>
+                            <th>APELLIDOS</th>
+                            <th>TELEFONO</th>
+                            <th>PRODUCTO</th>
+                            <th>C.N.</th>
+                            <th>UDS</th>
+                            <th>PROVEEDOR</th>
+                            <th>FECHA/HORA</th>
+                            <th>OBSERVACIONES</th>
+                            <th>MODIFICAR</th>
 
                           </tr>
                 <?php
                 while($fila = mysqli_fetch_array($buscar)){
-                  $id = $fila["id"] ."||".
+                  $ids = $fila["id"] ."||".
                         $fila["nombre"] ."||".
                         $fila["apellidos"] ."||".
                         $fila["telef"] ."||".
                         $fila["producto"] ."||".
                         $fila["cn"] ."||".
                         $fila["unidades"] ."||".
-                    $fila["observaciones"];
+                        $fila["observaciones"];
                      ?> 
                 <tr>
                       <td><?php echo $fila[1] ?></td>
@@ -409,28 +456,20 @@ if(isset($_POST["ENCARGOS"])){
                       <td><?php echo $fila[7] ?></td>
                       <td><?php echo $fila[8] ?></td>
                       <td><?php echo $fila[11] ?></td>
-                      <td><?php echo $fila[12] ?></td>
-                      <td> <button type="button" class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="mostrarForm('<?php echo $id ?>')"></button> 
-                      </td>
+                      <td><p><?php echo $fila[12] ?></p></td>
+                      <td> <button type="button" class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="mostrarForm('<?php echo $ids ?>')"></button> </td>
                     </tr>
                <?php
                     }
                  
                 ?>
                   </table>
+                  </div>
+                  <button type="submit" class="btn btn-success glyphicon glyphicon-chevron-left" id="botonAtras"> Inicio</button>
                 </div>
               </div>
             </div>
-          </div>
-
-<?php
-      }
-      else if($_GET["accion"]==10){
-         $cod = $_POST["id"];
-            mysqli_query($enlace, "UPDATE encargos SET dispensado = 'SI' where id='$cod'");
-      ?>
-            <script>alert('PRODUCTO DISPENSADO');
-            window.location='index.php';</script>
+          
 <?php
       }
       else if($_GET["accion"]==5){
@@ -448,7 +487,6 @@ if(isset($_POST["ENCARGOS"])){
                 <input id='texto' type='text'  name='apellidos'><br><br>
                 <label>SERVICIO</label>
                 <select name='servicio'>
-                <option value='3'>N/A</option>
                 <option value='1'>DIETÉTICA</option>
                 <option value='2'>ESTÉTICA</option>
                 </select>
@@ -459,9 +497,12 @@ if(isset($_POST["ENCARGOS"])){
                       <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
                       </span>
                   </div>
-                  <button type="submit" class="btn btn-primary">BUSCAR</button>
+                  <button type='submit' class='btn btn-success glyphicon glyphicon-search' name='buscar'> Buscar</button>
 
-                </form></div></div>
+                </form>
+                  <button type="submit" class="btn btn-warning glyphicon glyphicon-chevron-left" id="botonAtras"> Inicio</button>
+                </div>
+                </div>
 <?php
       }
       else if($_GET["accion"]==11){
@@ -485,7 +526,7 @@ if(isset($_POST["ENCARGOS"])){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modificar</h4>
+        <h4 class="modal-title" id="myModalLabel">Agregar servicio</h4>
       </div>
       <div class="modal-body">
          
@@ -495,6 +536,11 @@ if(isset($_POST["ENCARGOS"])){
         <input type="" name="" id="apellidos3">
         <label>Telefono</label>
         <input type="" name="" id="telefono3">
+        <label>Servicio</label>
+        <select name='' id="servi">
+                <option value='1'>DIETÉTICA</option>
+                <option value='2'>ESTÉTICA</option>
+                </select>
         <label>FECHA</label>
         
         <div id='datetimepicker1' class='input-append date'>
@@ -550,10 +596,10 @@ if(isset($_POST["ENCARGOS"])){
 
      <div class='container'>
                       <div id='tabla'>
-
+                          <?php $buscar = mysqli_query($enlace, "CALL CONSULTA_SERVICIOS('$nombre','$apellidos','$fecha','$servicio')"); $fila2 = mysqli_fetch_array($buscar)  ?>
                         <div class='row'>
                           <div class'col-sm-12'>
-                              <h2>RESULTADOS</h2>
+                              <h2>CITAS DIA <?php echo $fecha,' ';if($fila2["nombre"] == ''){echo 'NO HAY CITAS PARA EL DIA ELEGIDO';} else if($servicio == 1){echo 'DIETÉTICA';}else if($servicio == 2){echo 'ESTÉTICA';}?></h2>
                             <table class='table table-hover table-condensed table-bordered'>
                           <tr>
                             
@@ -567,7 +613,7 @@ if(isset($_POST["ENCARGOS"])){
 
                           </tr>
                 <?php
-                    $buscar = mysqli_query($enlace, "CALL CONSULTA_SERVICIOS('$nombre','$apellidos','$fecha','$servicio')");
+                    
 
                 while($fila = mysqli_fetch_array($buscar)){
                   $id = $fila["id"] ."||".
@@ -590,10 +636,17 @@ if(isset($_POST["ENCARGOS"])){
                       <td> <button type="button" class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="mostrarFormSer('<?php echo $id ?>')"></button> 
                       </td>
                     </tr>
+
                 <?php
 
               }
+
              ?> 
+             </table>
+             <button type="submit" class="btn btn-success glyphicon glyphicon-chevron-left" id="botonAtras"></button>
+             </div>
+             
+                    
    <?php     
     }
       else if($_GET["accion"]==15){
@@ -631,8 +684,14 @@ if(isset($_POST["ENCARGOS"])){
           $c = $_POST['telefono'];
           $d = 'NO';
           $e = $_POST['fecha'];
+          $f = $_POST['servicio'];
 
-          mysqli_query($enlace,"SELECT REGISTRO_SERVICIO('$a','$b','$c',1,'$e')");
+          $valor = mysqli_query($enlace,"SELECT REGISTRO_SERVICIO('$a','$b','$c',$f,'$e')");
+
+          if(!$valor)
+          {
+            echo "  error";
+          }
 
       }
 

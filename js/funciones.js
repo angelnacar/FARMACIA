@@ -1,9 +1,10 @@
 
-	function agregarDatos(nombre,apellidos,telefono,fecha)
+	function agregarDatos(nombre,apellidos,telefono,fecha,servici)
 	{
 		cadena = "nombre=" + nombre + 
 				 "&apellidos=" + apellidos + 
 				 "&telefono=" +telefono +
+				 "&servicio=" +servici +
 				 "&fecha=" + fecha;
 
 				  $.ajax({

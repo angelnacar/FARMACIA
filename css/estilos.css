@@ -87,3 +87,23 @@ background: #b2beb2 url('flecha_arriba.png') no-repeat 98% 5px;
 table.header tr:nth-child(n+2) {
   text-align: right;
 }
+
+table tr th {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.sorting {
+  background-color: #D4D4D4;
+}
+
+.asc:after {
+  content: ' ↑';
+}
+
+.desc:after {
+  content: " ↓";
+}
