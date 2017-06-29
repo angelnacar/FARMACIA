@@ -422,7 +422,7 @@
                         <div class='row'>
                           <div class'col-sm-12'>
                           
-                              <h2>ENCARGOS DE <?php echo $fechaini,' - ',$fechafin?></h2>
+                              <h2>ENCARGOS DE <?php echo $fechaini,' -A- ',$fechafin?></h2>
                             <table class='table table-hover table-condensed table-bordered'>
                           <tr>
                             <th>EMPLEADO</th>
@@ -440,8 +440,9 @@
                           </tr>
                 <?php
                 $estilo = '';
+                $control = 0;
                 while($fila = mysqli_fetch_array($buscar)){
-                  $control = $fila["id"];
+                  $control += 1;
 
                       if($control % 2 == 0) // CAMBIA LOS COLORES DE LAS FILAS DE LA TABLA
                       {
@@ -629,8 +630,20 @@
                           </tr>
                 <?php
                     
-
+                  $estilo = '';
+                  $control = 0;
                 while($fila = mysqli_fetch_array($buscar)){
+                  $control += 1;
+
+                      if($control % 2 == 0) // CAMBIA LOS COLORES DE LAS FILAS DE LA TABLA
+                      {
+                          $estilo = 'active';
+                      }
+                      else
+                      {
+                        $estilo = 'info';
+                      }
+
                   $id = $fila["id"] ."||".
                         $fila["nombre"] ."||".
                         $fila["apellidos"] ."||".
@@ -640,7 +653,7 @@
 
                         
                      ?> 
-                <tr>
+                <tr class="<?php echo $estilo; ?>">
                       
                       <td><?php echo $fila[2] ?></td>
                       <td><?php echo $fila[3] ?></td>
@@ -658,7 +671,7 @@
 
              ?> 
              </table>
-             <button type="submit" class="btn btn-success glyphicon glyphicon-home" id="botonAtras"></button>
+             <button type="submit" class="btn btn-success glyphicon glyphicon-home" id="botonAtras"> Inicio</button>
              </div>
              
                     

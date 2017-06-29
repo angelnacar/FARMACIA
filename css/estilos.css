@@ -1,5 +1,12 @@
 @charset "UTF-8";
 
+body {
+
+  background-image: url("mor.jpg");
+
+
+}
+
 
 #contenedor{
   width: 90%;
