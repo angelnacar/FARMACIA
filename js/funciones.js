@@ -12,7 +12,9 @@
 				url:"procesos.php?accion=21",
 				data:cadena,
 				success:function(r)
+
 				{
+					
 					if(r)
 					{
 

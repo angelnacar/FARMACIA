@@ -4,6 +4,7 @@
 
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
       <link rel="stylesheet" type="text/css" href="css/estilos.css"/>
       <link rel="stylesheet" href="css/bootstrap.min.css">
       <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css" />
@@ -20,115 +21,117 @@
       <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
       <script src="js/funciones.js"></script>
 
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#tablas").tablesorter();
-});
-</script>
-<script type="text/javascript">
-  $(function() {
-    $('#datetimepicker1').datetimepicker({
-      language: 'pt-BR'
-    });
-  });
-</script>
-<script type="text/javascript">
-  $(function() {
-    $('#datetimepicker2').datetimepicker({
-      language: 'pt-BR'
-    });
-  });
-</script>
-<script type="text/javascript">
-  $(document).ready(function(){
-   
-      $('#botonAtras').click(function(){
-          window.location="index.php";
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#tablas").tablesorter();
       });
+    </script>
+
+    <script type="text/javascript">
+      $(function() {
+       $('#datetimepicker1').datetimepicker({
+          language: 'pt-BR'
+        });
+      });
+    </script>
+
+    <script type="text/javascript">
+      $(function() {
+        $('#datetimepicker2').datetimepicker({
+          language: 'pt-BR'
+        });
+      });
+    </script>
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#botonAtras').click(function(){
+          window.location="index.php";
+        });
 
       $('#actualizarDatos').click(function(){
 
-      id = $('#idpersona').val();
-      nombre = $('#nombre').val();
-      apellidos = $('#apellidos').val();
-      telefono = $('#telefono').val();
-      producto = $('#producto').val();
-      cn = $('#codigoN').val();
-      unidades = $('#unidades').val();
-      observaciones = $('#observa').val();
+        id = $('#idpersona').val();
+        nombre = $('#nombre').val();
+        apellidos = $('#apellidos').val();
+        telefono = $('#telefono').val();
+        producto = $('#producto').val();
+        cn = $('#codigoN').val();
+        unidades = $('#unidades').val();
+        observaciones = $('#observa').val();
       
       actualizarDatos(id,nombre,apellidos,telefono,producto,cn,unidades,observaciones);
       });
 
-       $('#actualizarServicios').click(function(){
+      $('#actualizarServicios').click(function(){
 
-      id = $('#id2').val();
-      nombre = $('#nombre2').val();
-      apellidos = $('#apellidos2').val();
-      telefono = $('#telefono2').val();
-      confirmado = $('#confi2').val();
-      fecha = $('#fecha2').val();
+        id = $('#id2').val();
+        nombre = $('#nombre2').val();
+        apellidos = $('#apellidos2').val();
+        telefono = $('#telefono2').val();
+        confirmado = $('#confi2').val();
+        fecha = $('#fecha2').val();
      
       actualizarSer(id,nombre,apellidos,telefono,confirmado,fecha);
     });
 
-        $('#agregarServicio').click(function(){
+      $('#agregarServicio').click(function(){
 
-          nombre3 = $('#nombre3').val();
-          apellidos3 = $('#apellidos3').val();
-          telefono3 = $('#telefono3').val();
-          fecha3 = $('#fecha3').val();
-          servici = $('#servi').val();
+        nombre3 = $('#nombre3').val();
+        apellidos3 = $('#apellidos3').val();
+        telefono3 = $('#telefono3').val();
+        fecha3 = $('#fecha3').val();
+        servici = $('#servi').val();
 
          agregarDatos(nombre3,apellidos3,telefono3,fecha3,servici);
        });
-    });
-</script>
+      });
+    </script>
 
-<script type="text/javascript">  <!-- PARA NO PERMITIR SALTOS DE LINEA EN LOS FORMULARIOS -->
-$(document).ready(function() {
-    $(".form-control").keypress(function(e) {
-        if (e.which == 13) {
+    <script type="text/javascript">  <!-- PARA NO PERMITIR SALTOS DE LINEA EN LOS FORMULARIOS -->
+      $(document).ready(function() {
+       $(".form-control").keypress(function(e) {
+        if(e.which == 13) {
             return false;
+         }
+      });
+
+      $('th').click(function() {
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc) {
+            rows = rows.reverse()
+        } 
+        for (var i = 0; i < rows.length; i++) {
+          table.append(rows[i])
         }
-    });
+        setIcon($(this), this.asc);
+      })
 
-     $('th').click(function() {
-    var table = $(this).parents('table').eq(0)
-    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
-    this.asc = !this.asc
-    if (!this.asc) {
-      rows = rows.reverse()
-    }
-    for (var i = 0; i < rows.length; i++) {
-      table.append(rows[i])
-    }
-    setIcon($(this), this.asc);
-  })
+        function comparer(index) {
+          return function(a, b) {
+          var valA = getCellValue(a, index),
+          valB = getCellValue(b, index)
+         return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB)
+        }
+      }
 
-  function comparer(index) {
-    return function(a, b) {
-      var valA = getCellValue(a, index),
-        valB = getCellValue(b, index)
-      return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB)
-    }
-  }
+        function getCellValue(row, index) {
+          return $(row).children('td').eq(index).html()
+      }
 
-  function getCellValue(row, index) {
-    return $(row).children('td').eq(index).html()
-  }
-
-  function setIcon(element, asc) {
-    $("th").each(function(index) {
+        function setIcon(element, asc) {
+      $("th").each(function(index) {
       $(this).removeClass("sorting");
       $(this).removeClass("asc");
       $(this).removeClass("desc");
     });
-    element.addClass("sorting");
-    if (asc) element.addClass("asc");
-    else element.addClass("desc");
-  }
-});
+      element.addClass("sorting");
+        if (asc) element.addClass("asc");
+         else element.addClass("desc");
+      }
+  });
 </script>
 
 </head>
@@ -138,12 +141,12 @@ $(document).ready(function() {
 <?php
   include("conexion.php");
 
-if(isset($_POST["ENCARGOS"])){
+    if(isset($_POST["ENCARGOS"])){
 ?>
 
   <div class="container">
     <div id='contenedor3'>
-        <h1><strong>AGREGAR ENCARGO</strong></h1>
+        <h1><strong>NUEVO ENCARGO</strong></h1>
             <div class='row'>
               <div class='col-xs-3'>
                 <form name='REGISTRO' method='POST' action='procesos.php?accion=1' enctype='multipart/form-data'>
@@ -199,8 +202,8 @@ if(isset($_POST["ENCARGOS"])){
                 <label>OBSERVACIONES</label><br>
                 <textarea class='form-control' rows='10' name='observa'></textarea><br><br>
                   <button type='submit' class='btn btn-success btn-lg glyphicon glyphicon-floppy-disk' name='registrar'> Guardar</button>
-                </form><br>
-                <button type="submit" class="btn btn-warning glyphicon glyphicon-chevron-left" id="botonAtras"> Inicio</button>
+                </form><br><br>
+                <button type="submit" class="btn btn-warning glyphicon glyphicon-home" id="botonAtras"> Inicio</button>
             </div>
           </div>
     <?php
@@ -247,7 +250,7 @@ if(isset($_POST["ENCARGOS"])){
               </div>
               <div class='col-xs-5'>
                 <form name='F2' method='POST' action='index.php'>
-                  <button type='submit' class='btn btn-danger btn-lg glyphicon glyphicon-triangle-left' name='vovler'> Inicio</button></form>
+                  <button type='submit' class='btn btn-danger btn-lg glyphicon glyphicon-home' name='vovler'> Inicio</button></form>
               </div>
             </div>
           </div>
@@ -282,7 +285,7 @@ if(isset($_POST["ENCARGOS"])){
               </select></br></br>
              <button type='submit' class='btn btn-success btn-lg glyphicon glyphicon-floppy-disk' name='registrar'> Guardar</button>
             </form>
-              <button type="submit" class="btn btn-warning glyphicon glyphicon-chevron-left" id="botonAtras"> Inicio</button>
+              <button type="submit" class="btn btn-warning glyphicon glyphicon-home" id="botonAtras"> Inicio</button>
         </div>
       </div>
 <?php
@@ -357,7 +360,7 @@ if(isset($_POST["ENCARGOS"])){
               <br><br>
                   <button type='submit' class='btn btn-success glyphicon glyphicon-search' name='buscar'> Buscar</button>
                 </form>
-                  <button type="submit" class="btn btn-warning glyphicon glyphicon-chevron-left" id="botonAtras"> Inicio</button>
+                  <button type="submit" class="btn btn-warning glyphicon glyphicon glyphicon-home" id="botonAtras"> Inicio</button>
         </div>
       </div>
     <?php
@@ -436,7 +439,19 @@ if(isset($_POST["ENCARGOS"])){
 
                           </tr>
                 <?php
+                $estilo = '';
                 while($fila = mysqli_fetch_array($buscar)){
+                  $control = $fila["id"];
+
+                      if($control % 2 == 0) // CAMBIA LOS COLORES DE LAS FILAS DE LA TABLA
+                      {
+                          $estilo = 'active';
+                      }
+                      else
+                      {
+                        $estilo = 'info';
+                      }
+
                   $ids = $fila["id"] ."||".
                         $fila["nombre"] ."||".
                         $fila["apellidos"] ."||".
@@ -446,9 +461,9 @@ if(isset($_POST["ENCARGOS"])){
                         $fila["unidades"] ."||".
                         $fila["observaciones"];
                      ?> 
-                <tr>
+                <tr class="<?php echo $estilo; ?>">
                       <td><?php echo $fila[1] ?></td>
-                      <td><?php echo $fila[2] ?></td>
+                      <td ><?php echo $fila[2] ?></td>
                       <td><?php echo $fila[3] ?></td>
                       <td><?php echo $fila[4] ?></td>
                       <td><?php echo $fila[5] ?></td>
@@ -465,7 +480,7 @@ if(isset($_POST["ENCARGOS"])){
                 ?>
                   </table>
                   </div>
-                  <button type="submit" class="btn btn-success glyphicon glyphicon-chevron-left" id="botonAtras"> Inicio</button>
+                  <button type="submit" class="btn btn-success glyphicon glyphicon-home" id="botonAtras"> Inicio</button>
                 </div>
               </div>
             </div>
@@ -500,7 +515,7 @@ if(isset($_POST["ENCARGOS"])){
                   <button type='submit' class='btn btn-success glyphicon glyphicon-search' name='buscar'> Buscar</button>
 
                 </form>
-                  <button type="submit" class="btn btn-warning glyphicon glyphicon-chevron-left" id="botonAtras"> Inicio</button>
+                  <button type="submit" class="btn btn-warning glyphicon glyphicon-home" id="botonAtras"> Inicio</button>
                 </div>
                 </div>
 <?php
@@ -643,7 +658,7 @@ if(isset($_POST["ENCARGOS"])){
 
              ?> 
              </table>
-             <button type="submit" class="btn btn-success glyphicon glyphicon-chevron-left" id="botonAtras"></button>
+             <button type="submit" class="btn btn-success glyphicon glyphicon-home" id="botonAtras"></button>
              </div>
              
                     
@@ -688,10 +703,7 @@ if(isset($_POST["ENCARGOS"])){
 
           $valor = mysqli_query($enlace,"SELECT REGISTRO_SERVICIO('$a','$b','$c',$f,'$e')");
 
-          if(!$valor)
-          {
-            echo "  error";
-          }
+          echo $valor;
 
       }
 
