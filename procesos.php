@@ -223,13 +223,13 @@
 
          $resultado = mysqli_query($enlace,"CALL REGISTRO_ENCARGO('$empleado','$nombre','$apellidos','$telf','$producto','$codigoNaci',$unidades,'$proveedor','$fecha','$observaciones')");
 
-         if(resultado)
+         if($resultado)
          {
              echo "<script> alert('ENCARGO REGISTRADO') ; window.location='index.php';</script>";
          }
          else 
          {
-            echo "<script> alert('FALLO EN REGISTRO, VUELVA A INTENTARLO') ; window.location='procesos.php?ENCARGOS';</script>";
+            echo "<script> alert('FALLO EN REGISTRO, VUELVA A INTENTARLO') ; window.location='index.php';</script>";
          }
          
 
@@ -490,7 +490,7 @@
       }
       else if($_GET["accion"]==5){
       ?>
-      <div class="container">
+      <div class="container-fluid">
         <div id='contenedor3'>
 
                 <h1><strong>BUSCAR SERVICIO</strong></h1>
@@ -610,12 +610,12 @@
   </div>
 </div>
 
-     <div class='container'>
+                <div class='container'>
                       <div id='tabla'>
-                          <?php $buscar = mysqli_query($enlace, "CALL CONSULTA_SERVICIOS('$nombre','$apellidos','$fecha','$servicio')"); $fila2 = mysqli_fetch_array($buscar)  ?>
+                          <?php $buscar = mysqli_query($enlace, "CALL CONSULTA_SERVICIOS('$nombre','$apellidos','$fecha',$servicio)"); ?>
                         <div class='row'>
                           <div class'col-sm-12'>
-                              <h2>CITAS DIA <?php echo $fecha,' ';if($fila2["nombre"] == ''){echo 'NO HAY CITAS PARA EL DIA ELEGIDO';} else if($servicio == 1){echo 'DIETÉTICA';}else if($servicio == 2){echo 'ESTÉTICA';}?></h2>
+                              <h2><?php  if($servicio == 1){echo 'CITAS DIETÉTICA DIA: ',$fecha;} else if($servicio == 2){echo 'CITAS ESTÉTICA DIA: ',$fecha;}?></h2>
                             <table class='table table-hover table-condensed table-bordered'>
                           <tr>
                             

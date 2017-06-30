@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-06-2017 a las 14:36:39
+-- Tiempo de generación: 30-06-2017 a las 12:36:32
 -- Versión del servidor: 5.7.14
 -- Versión de PHP: 5.6.25
 
@@ -46,10 +46,15 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `CONSULTA_SERVICIOS` (IN `nom` VARCHAR(20), IN `apel` VARCHAR(40), IN `fecha` DATETIME, IN `ser` TINYINT)  BEGIN
 		
+	declare x varchar(20);
+    declare y varchar(20);
+    
+    
+    set x = CONCAT("%",nom,"%"); /*PARA PODER UTILIZAR LIKE EN PROCEDIMIENTOS*/
+    set y = CONCAT("%",apel,"%");
         
-        
-			if nom != '' then select*from encargos where nombre = nom and servicio = ser;
-            elseif apel != '' then select*from encargos where apellidos = apel and servicio = ser;
+			if nom != '' then select*from encargos where nombre like x and servicio = ser;
+            elseif apel != '' then select*from encargos where apellidos like y and servicio = ser;
             elseif fecha != '' then select*from encargos where date(fechaHora) = fecha and servicio = ser;
             
             
@@ -104,30 +109,6 @@ CREATE TABLE `encargos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `encargos`
---
-
-INSERT INTO `encargos` (`id`, `empleado`, `nombre`, `apellidos`, `telef`, `producto`, `cn`, `unidades`, `proveedor`, `servicio`, `confirmado`, `fechaHora`, `observaciones`) VALUES
-(1, NULL, 'PEPE', 'GARCIA', '65896896', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-29 13:47:00', ''),
-(2, NULL, 'ALBERTO', 'LOPEZ', '6585458', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-30 13:49:00', ''),
-(3, 'ANGEL', 'PACO', 'FERNANDEZ GARCIA', '658985899', 'ASPIRINAS', '658569', 2, 'ALLIANCE', NULL, NULL, '2017-06-29 12:04:00', 'PRODUCTO PAGAGO'),
-(4, 'ANGEL', 'ALONSO', 'GARCIA GARCIA', '65854587', 'ASPIRNAS', '652878', 4, 'ALLIANCE', 0, NULL, '2017-06-29 12:22:00', 'JDKASLJDASJDKLASJDLKA'),
-(5, NULL, 'ISABEL', 'GARCIA FERNANDEZ', '6585458', NULL, NULL, NULL, NULL, 2, 'NO', '2017-07-01 14:24:00', ''),
-(6, NULL, 'ESTETICA', 'ESTETICA', '6585458', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-30 14:26:00', ''),
-(7, NULL, 'WQW', 'WQ', 'WQ', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-29 14:28:00', ''),
-(8, NULL, 'WQW', 'WQ', 'WQ', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-25 14:28:00', ''),
-(9, NULL, 'QWQ', 'WQW', 'QWQ', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-29 14:29:00', ''),
-(10, NULL, 'PEPE', 'ESTETICA', '', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-29 15:03:00', ''),
-(11, NULL, 'PEEP', 'NO SE QUE', '65856568', NULL, NULL, NULL, NULL, 1, 'NO', '2017-07-07 15:05:00', ''),
-(12, NULL, 'wq', 'wq', 'q', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-29 15:06:00', ''),
-(13, NULL, 'ESTETICA ', 'ESTETICA', 'ESTETICA', NULL, NULL, NULL, NULL, 1, 'NO', '2017-06-29 15:07:00', ''),
-(14, 'ANGEL', 'LUCIA', 'LOPEZ MODIFICADO', '6589658', 'FRENADIL', '65289', 4, 'HEFAME', 0, NULL, '2017-06-29 13:15:00', 'PAGADO'),
-(15, NULL, 'LUISA', 'GARCIA ESTETICA', '6585658', NULL, NULL, NULL, NULL, 2, 'NO', '2017-07-01 15:33:00', ''),
-(16, NULL, 'WQ', 'WQ', '6585896', NULL, NULL, NULL, NULL, 1, 'NO', '2017-07-08 15:36:00', ''),
-(17, 'ANGEL', 'cambiado', 'nuevamente cambiado', '', 'cambiado', '6585658', 1, 'HEFAME', 0, NULL, '2017-06-29 13:42:00', 'cambiado'),
-(18, NULL, 'LUISA ESTETICA', 'GARCIA', '6585658', NULL, NULL, NULL, NULL, 2, 'NO', '2017-07-01 16:17:00', '');
-
---
 -- Índices para tablas volcadas
 --
 
@@ -145,7 +126,7 @@ ALTER TABLE `encargos`
 -- AUTO_INCREMENT de la tabla `encargos`
 --
 ALTER TABLE `encargos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
