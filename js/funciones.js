@@ -1,8 +1,8 @@
 
 	function agregarDatos(nombre,apellidos,telefono,fecha,servici)
 	{
-		cadena = "nombre=" + nombre + 
-				 "&apellidos=" + apellidos + 
+		cadena = "nombre=" + nombre +
+				 "&apellidos=" + apellidos +
 				 "&telefono=" +telefono +
 				 "&servicio=" +servici +
 				 "&fecha=" + fecha;
@@ -14,11 +14,11 @@
 				success:function(r)
 
 				{
-					
+
 					if(r)
 					{
 
-						$('#tabla').load('procesos.php?accion=5');
+						$('#tabla').load('procesos.php?accion=11');
 						alertify.success("AGREGADO CON EXITO");
 					}
 					else
@@ -41,8 +41,8 @@
 		$('#codigoN').val(d[5]);
 		$('#unidades').val(d[6]);
 		$('#observa').val(d[7]);
-		
-		
+
+
 	}
 	function mostrarFormSer(datos)
 	{
@@ -58,11 +58,11 @@
 	}
 	function actualizarDatos(id,nombre,apellidos,telefono,producto,cn,unidades,observaciones)
 	{
-		
+
 
 		cadena = "idpersona=" + id +
-				"&nombre=" + nombre + 
-				 "&apellidos=" + apellidos + 
+				"&nombre=" + nombre +
+				 "&apellidos=" + apellidos +
 				 "&telefono=" +telefono +
 				 "&producto=" + producto +
 				 "&codigoN=" + cn +
@@ -78,7 +78,7 @@
 					if(r)
 					{
 
-						$('#tabla').load('procesos.php?accion=4');
+						$('#tabla').load('procesos.php?accion=6');
 						alertify.success("ACTUALIZADO CON EXITO");
 					}
 					else
@@ -92,8 +92,8 @@
 	function actualizarSer(id,nombre,apellidos,telefono,confirmado,fecha)
 	{
 		cadena = "id=" + id +
-				"&nombre=" + nombre + 
-				 "&apellidos=" + apellidos + 
+				"&nombre=" + nombre +
+				 "&apellidos=" + apellidos +
 				 "&telefono=" +telefono +
 				 "&confirmado=" + confirmado +
 				 "&fecha=" + fecha;
@@ -107,7 +107,7 @@
 					if(r)
 					{
 
-						$('#tabla').load('procesos.php?accion=5');
+						$('#tabla').load('procesos.php?accion=11');
 						alertify.success("ACTUALIZADO CON EXITO");
 					}
 					else

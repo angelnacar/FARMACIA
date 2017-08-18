@@ -12,7 +12,7 @@
       <link rel="stylesheet" href="css/default.css">
       <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="screen" href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
-     
+
       <script src="js/jquery.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
       <script src="js/jquery.tablesorter.min"></script>
@@ -59,7 +59,7 @@
         cn = $('#codigoN').val();
         unidades = $('#unidades').val();
         observaciones = $('#observa').val();
-      
+
       actualizarDatos(id,nombre,apellidos,telefono,producto,cn,unidades,observaciones);
       });
 
@@ -71,7 +71,7 @@
         telefono = $('#telefono2').val();
         confirmado = $('#confi2').val();
         fecha = $('#fecha2').val();
-     
+
       actualizarSer(id,nombre,apellidos,telefono,confirmado,fecha);
     });
 
@@ -102,7 +102,7 @@
         this.asc = !this.asc
         if (!this.asc) {
             rows = rows.reverse()
-        } 
+        }
         for (var i = 0; i < rows.length; i++) {
           table.append(rows[i])
         }
@@ -227,11 +227,11 @@
          {
              echo "<script> alert('ENCARGO REGISTRADO') ; window.location='index.php';</script>";
          }
-         else 
+         else
          {
             echo "<script> alert('FALLO EN REGISTRO, VUELVA A INTENTARLO') ; window.location='index.php';</script>";
          }
-         
+
 
         }
       else if(isset($_POST["BUSCAR"])){
@@ -290,15 +290,15 @@
       </div>
 <?php
     }
-    else if(@$_GET["accion"] == 3){    
+    else if(@$_GET["accion"] == 3){
       $nombre = @$_POST["nombre"];
       $apellidos = @$_POST["apellidos"];
       $telf = @$_POST["telefono"];
       $fecha  = @$_POST["fecha"];
       $hora = @$_POST["hora"];
       $servicio = @$_POST["servicio"];
-    
-            
+
+
           $valor = mysqli_query($enlace,"SELECT REGISTRO_SERVICIO('$nombre','$apellidos','$telf','$servicio','$fecha')");
 
           $valores = mysqli_fetch_array($valor);
@@ -312,7 +312,7 @@
           {
             echo "<script> alert('DIA Y HORA OCUPADA, VUELVA A INTENTARLO'); window.location='index.php';</script>";
           }
-            
+
 ?>
 
 
@@ -372,6 +372,16 @@
               $codigoN = @$_POST["codigoNaci"];
               $fechaini = @$_POST["fechaini"];
               $fechafin = @$_POST["fechafin"];
+                  if($nombre == '' && $apel == '' && $producto == '' && $codigoN == '' && $fechaini == '' && $fechafin == '')
+                  {
+                    ?>
+                    <script type="text/javascript">
+
+                    location.reload(true);
+                    </script>
+                    <?php
+                  }
+
                   if($fechaini == '' && $fechafin == '') //solución para los casos en que devuelve falso la consulta a la bbdd por falta de fecha
                   {
                     $fechaini = '9999/12/30';
@@ -381,10 +391,10 @@
             $buscar = mysqli_query($enlace, "CALL CONSULTA_PRODUCTOS('$nombre','$apel','$producto','$codigoN','$fechaini','$fechafin')");
 
 
-              
+
       ?>
-        
-              
+
+
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                   <div class="modal-dialog modal-sm" role="document">
                     <div class="modal-content">
@@ -421,7 +431,7 @@
 
                         <div class='row'>
                           <div class'col-sm-12'>
-                          
+
                               <h2>ENCARGOS DE <?php echo $fechaini,' -A- ',$fechafin?></h2>
                             <table class='table table-hover table-condensed table-bordered'>
                           <tr>
@@ -461,7 +471,7 @@
                         $fila["cn"] ."||".
                         $fila["unidades"] ."||".
                         $fila["observaciones"];
-                     ?> 
+                     ?>
                 <tr class="<?php echo $estilo; ?>">
                       <td><?php echo $fila[1] ?></td>
                       <td ><?php echo $fila[2] ?></td>
@@ -477,7 +487,7 @@
                     </tr>
                <?php
                     }
-                 
+
                 ?>
                   </table>
                   </div>
@@ -485,7 +495,7 @@
                 </div>
               </div>
             </div>
-          
+
 <?php
       }
       else if($_GET["accion"]==5){
@@ -494,7 +504,7 @@
         <div id='contenedor3'>
 
                 <h1><strong>BUSCAR SERVICIO</strong></h1>
-              
+
                 <form name='REGISTRO' method='POST' action='procesos.php?accion=11'>
 
                 <label>NOMBRE</label>
@@ -527,12 +537,20 @@
           $servicio = $_POST["servicio"];
           $fecha = $_POST["fecha"];
 
-          if($fecha == '')
+
+          if($nombre == '' && $apellidos == '' && $fecha == '')   //RECARGA PAGINA PARA LAS ACTUALIZACIONES
           {
-            $fecha = '9999/12/30';
+              ?>
+            <script type="text/javascript">
+
+            location.reload(1);
+            </script>
+          <?php
           }
-          
-?>
+          ?>
+
+
+
           <!-- Agregar servicios -->
 <button type="button" class="btn btn-primary glyphicon glyphicon-plus" data-toggle="modal" data-target="#modalNuevo">
   Agregar servicio
@@ -545,7 +563,7 @@
         <h4 class="modal-title" id="myModalLabel">Agregar servicio</h4>
       </div>
       <div class="modal-body">
-         
+
         <label>Nombre</label>
         <input type="" name=""  id="nombre3">
         <label>Apellidos</label>
@@ -558,14 +576,14 @@
                 <option value='2'>ESTÉTICA</option>
                 </select>
         <label>FECHA</label>
-        
+
         <div id='datetimepicker1' class='input-append date'>
-                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='' id="fecha3"></input>
+                    <input data-format='yyyy/MM/dd hh:mm' type='text' name='' id="fecha3" value='<?php echo $fecha ?>'></input>
                       <span class='add-on'>
                       <i data-time-icon='icon-time' data-date-icon='icon-calendar'></i>
                       </span>
                   </div>
-        
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -592,7 +610,7 @@
         <label>Telefono</label>
         <input type="" name="" id="telefono2">
         <label>FECHA</label>
-        
+
         <div id='datetimepicker2' class='input-append date'>
                     <input data-format='yyyy/MM/dd hh:mm' type='text' name='' id="fecha2"></input>
                       <span class='add-on'>
@@ -618,18 +636,18 @@
                               <h2><?php  if($servicio == 1){echo 'CITAS DIETÉTICA DIA: ',$fecha;} else if($servicio == 2){echo 'CITAS ESTÉTICA DIA: ',$fecha;}?></h2>
                             <table class='table table-hover table-condensed table-bordered'>
                           <tr>
-                            
+
                             <th>NOMBRE</th>
                             <th>APELLIDOS</th>
                             <th>TELEFONO</th>
                             <th>CONFIRMADO</th>
                             <th>FECHA/HORA</th>
                             <th>MODIFICAR</th>
-                            
+
 
                           </tr>
                 <?php
-                    
+
                   $estilo = '';
                   $control = 0;
                 while($fila = mysqli_fetch_array($buscar)){
@@ -651,17 +669,17 @@
                         $fila["confirmado"] ."||".
                         $fila["fechaHora"];
 
-                        
-                     ?> 
+
+                     ?>
                 <tr class="<?php echo $estilo; ?>">
-                      
+
                       <td><?php echo $fila[2] ?></td>
                       <td><?php echo $fila[3] ?></td>
                       <td><?php echo $fila[4] ?></td>
                       <td><?php echo $fila[10] ?></td>
                       <td><?php echo $fila[11] ?></td>
-                  
-                      <td> <button type="button" class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="mostrarFormSer('<?php echo $id ?>')"></button> 
+
+                      <td> <button type="button" class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="mostrarFormSer('<?php echo $id ?>')"></button>
                       </td>
                     </tr>
 
@@ -669,13 +687,13 @@
 
               }
 
-             ?> 
+             ?>
              </table>
              <button type="submit" class="btn btn-success glyphicon glyphicon-home" id="botonAtras"> Inicio</button>
              </div>
-             
-                    
-   <?php     
+
+
+   <?php
     }
       else if($_GET["accion"]==15){
 
@@ -690,7 +708,7 @@
 
             $sql = mysqli_query($enlace,"UPDATE encargos SET nombre = '$a',apellidos = '$b',telef = '$c',producto = '$d',cn = '$e',unidades = '$f',observaciones = '$g' where id = '$i' ");
 
-            
+
 
       }
       else if($_GET["accion"]==20){
@@ -706,7 +724,7 @@
       }
 
       else if($_GET["accion"]==21){
-          
+
           $a = $_POST['nombre'];
           $b = $_POST['apellidos'];
           $c = $_POST['telefono'];
